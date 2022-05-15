@@ -22,14 +22,15 @@ ReactDOM.render(
   <BrowserRouter>
     <Switch>
       {/* add routes with layouts */}
-      {/*   <Route path="/admin" component={Admin} /> */}
+        <Route path="/admin" component={Admin} />
       <Route path="/auth" component={Auth} />
       <Route path="/investor" component={Investor} />
       <Route path="/startupper" component={Startupper} />
       {/* add routes without layouts */}
       <Route path="/landing" exact component={Landing} />
       <Route path="/profile" exact component={Profile} />
-      <Route path="/" exact component={Index} />
+      <Route path="/" exact component={Index} /> 
+      
       {/* add redirect for first page */}
       <Redirect from="*" to="/" />
     </Switch>
