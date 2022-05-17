@@ -14,7 +14,7 @@ import Contacts from "views/startupper/Contact";
 import Teams from "views/startupper/Team";
 import StartupperSidebar from "components/Sidebar/StartupperSidebar";
 import HeaderStatsStartupper from "components/Headers/HeaderStatsStartupper";
-import Investors from "views/startupper/investor";
+import Investors from "views/startupper/Investor";
 
 
 export default function Startupper() {

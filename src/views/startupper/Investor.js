@@ -12,13 +12,17 @@ const Investors = ({ color }) => {
   const [investingStages, setInvestingStages] = useState("");
   const [ticketSize, setTicketsize] = useState("");
   
+  const [email, setEmail] = useState("");
+  const [post, setPost] = useState("");
+  const [investorId, setInvestorId] = useState("");
+
   var InvestorData = {
     name: name,
     investingStages: investingStages,
     ticketSize: ticketSize,
    
   };
-
+  
   const addInvestor = () => {
     console.log(InvestorData);
     axios
@@ -80,6 +84,10 @@ const Investors = ({ color }) => {
         console.log(err);
       });
   }, []);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log('here',user);
+  
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
