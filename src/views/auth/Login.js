@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
+import Auth from '../../services/auth.service'
+import { clippingParents } from "@popperjs/core";
+
 export default function Login() {
   ///  let navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -10,17 +14,21 @@ export default function Login() {
     username: username,
     password: password,
   };
+
   const signIn = () => {
-    axios
-      .post("http://localhost:8080/login", userAccount)
-      .then((res) => {
-        console.log(res.data.token);
-        localStorage.setItem("token", res.data.token);
+    if (!!!userAccount.password || !!!userAccount.username){
+      console.log('password or username is incorrect')
+    } else {
+      Auth.login(userAccount).then((res) => {
+        console.log('login',res.data)
+        localStorage.setItem("user", JSON.stringify(res.data));
       })
       .catch((err) => {
         console.log(err);
       });
+    }
   };
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
