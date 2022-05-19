@@ -24,7 +24,7 @@ export default function StartupperSidebar() {
             className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
             to="/"
           >
-            FOLLOWUPP
+            FOLLOWUP
           </Link>
           {/* User */}
           <ul className="md:hidden items-center flex flex-wrap list-none">
@@ -88,16 +88,18 @@ export default function StartupperSidebar() {
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/dashboard") !== -1
+                    (window.location.href.indexOf("/startupper/dashboard") !==
+                    -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/admin/dashboard"
+                  to="/startupper/dashboard"
                 >
                   <i
                     className={
-                      "fas fa-tv mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/dashboard") !== -1
+                      " mr-2 text-sm " +
+                      (window.location.href.indexOf("/startupper/dashboard") !==
+                      -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
@@ -110,16 +112,16 @@ export default function StartupperSidebar() {
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/startupper/startups") !== -1
+                    (window.location.href.indexOf("/startupper/startup") !== -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/startupper/startups"
+                  to="/startupper/startup"
                 >
                   <i
                     className={
                       "fas mr-2 text-sm " +
-                      (window.location.href.indexOf("/startupper/startups") !==
+                      (window.location.href.indexOf("/startupper/startup") !==
                       -1
                         ? "opacity-75"
                         : "text-blueGray-300")
@@ -141,7 +143,7 @@ export default function StartupperSidebar() {
                 >
                   <i
                     className={
-                      "fas fa-table mr-2 text-sm " +
+                      " mr-2 text-sm " +
                       (window.location.href.indexOf("/startupper/teams") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
@@ -163,7 +165,7 @@ export default function StartupperSidebar() {
                 >
                   <i
                     className={
-                      "fas fa-map-marked mr-2 text-sm " +
+                      " mr-2 text-sm " +
                       (window.location.href.indexOf("startupper/contacts") !==
                       -1
                         ? "opacity-75"
@@ -186,7 +188,7 @@ export default function StartupperSidebar() {
                 >
                   <i
                     className={
-                      "fas fa-map-marked mr-2 text-sm " +
+                      " mr-2 text-sm " +
                       (window.location.href.indexOf("startupper/members") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
@@ -208,7 +210,7 @@ export default function StartupperSidebar() {
                 >
                   <i
                     className={
-                      "fas fa-map-marked mr-2 text-sm " +
+                      " mr-2 text-sm " +
                       (window.location.href.indexOf("/startupper/files") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
@@ -231,7 +233,7 @@ export default function StartupperSidebar() {
                 >
                   <i
                     className={
-                      "fas fa-map-marked mr-2 text-sm " +
+                      " mr-2 text-sm " +
                       (window.location.href.indexOf("/startupper/investors") !==
                       -1
                         ? "opacity-75"

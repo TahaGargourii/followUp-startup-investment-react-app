@@ -1,33 +1,6 @@
 import React from "react";
-import { useEffect, useLayoutEffect } from "react/cjs/react.development";
-import Teams from "../../services/teams.service";
-import authHeader from "../../common/authHeader";
 
 export default function InvestorRegister() {
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    console.log(" useEffect here", user);
-    console.log(" useEffect getTeams");
-    Teams.getTeams()
-      .then((res) => {
-        console.log("getTeams", res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
-
-  const getteams = () => {
-    console.log("getTeams");
-    Teams.getTeams()
-      .then((res) => {
-        console.log("getTeams", res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   return (
     <>
       <div className="container mx-auto px-4 h-full">

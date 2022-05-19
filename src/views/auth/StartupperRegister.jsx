@@ -1,7 +1,6 @@
 import React from "react";
-import { useEffect, useLayoutEffect } from "react/cjs/react.development";
+import { useEffect } from "react/cjs/react.development";
 import Teams from "../../services/teams.service.jsx";
-import authHeader from "../../common/authHeader";
 
 export default function InvestorRegister() {
   useEffect(() => {

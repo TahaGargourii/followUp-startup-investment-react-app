@@ -3,18 +3,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-// components
-
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
-
-const Contacts = ({ color }) => {
+const Portfolios = ({ color }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [poste, setPost] = useState("");
   const [teamId, setTeamId] = useState("");
-  var MemberData = {
+  var PortfolioData = {
     firstName: firstName,
     lastName: lastName,
     phoneNumber: phoneNumber,
@@ -23,10 +19,10 @@ const Contacts = ({ color }) => {
     teamId: teamId,
   };
 
-  const addMember = () => {
-    console.log(MemberData);
+  const addPortfolio = () => {
+    console.log(PortfolioData);
     axios
-      .post("http://localhost:8080/api/members", MemberData)
+      .post("http://localhost:8080/api/portfolios", PortfolioData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -35,10 +31,10 @@ const Contacts = ({ color }) => {
       });
   };
 
-  const deleteAllMembers = () => {
-    console.log(MemberData);
+  const deleteAllPortfolios = () => {
+    console.log(PortfolioData);
     axios
-      .delete("http://localhost:8080/api/members", MemberData)
+      .delete("http://localhost:8080/api/portfolios", PortfolioData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -47,9 +43,9 @@ const Contacts = ({ color }) => {
       });
   };
 
-  const deleteMember = (id) => {
+  const deletePortfolio = (id) => {
     axios
-      .delete("http://localhost:8080/api/members/1")
+      .delete("http://localhost:8080/api/portfolios/" + { id })
       .then((res) => {
         console.log(res.data.report);
       })
@@ -58,10 +54,10 @@ const Contacts = ({ color }) => {
       });
   };
 
-  const updateMember = (id) => {
-    console.log(MemberData);
+  const updatePortfolio = (id) => {
+    console.log(PortfolioData);
     axios
-      .put("http://localhost:8080/api/members/" + id, MemberData)
+      .put("http://localhost:8080/api/portfolios/" + id, PortfolioData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -69,16 +65,17 @@ const Contacts = ({ color }) => {
         console.log(err);
       });
   };
-  const [members, setMember] = useState([]);
+  const [portfolios, setPortfolio] = useState([]);
   /*  const [startups, setStartups] = useState([]);
   const [investors, setInvestors] = useState([]);
   const [isFetching, setFetching] = useState(false); */
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/members")
+      .get("http://localhost:8080/api/portfolios")
       .then((res) => {
+        console.log("HELLO " + Object.keys(res.data.data).length);
         console.log("hello " + res.data.data);
-        setMember(res.data.data);
+        setPortfolio(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -90,131 +87,11 @@ const Contacts = ({ color }) => {
         <div className="rounded-t bg-white mb-0 px-6 py-6">
           <div className="text-center flex justify-between">
             <h6 className="text-blueGray-700 text-xl font-bold">
-              Member Information
+              Portfolio Information
             </h6>
           </div>
         </div>
-        <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <form>
-            <div className="flex flex-wrap">
-              <div className="w-full lg:w-6/12 px-4">
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    First Name
-                  </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setFirstName(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="w-full lg:w-6/12 px-4">
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setLastName(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="w-full lg:w-6/12 px-4">
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Phone Number
-                  </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setPhoneNumber(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="w-full lg:w-6/12 px-4">
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                  />
-                </div>
-
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Poste
-                  </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setPost(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Team
-                  </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setTeamId(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-            </div>
-
-            <hr className="mt-6 border-b-1 border-blueGray-300" />
-
-            <button
-              className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={addMember}
-            >
-              Sumbit
-            </button>
-          </form>
-        </div>
+        <div className="flex-auto px-4 lg:px-10 py-10 pt-0"></div>
       </div>
       <div
         className={
@@ -231,14 +108,14 @@ const Contacts = ({ color }) => {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Members
+                Portfolios
               </h3>
             </div>
 
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={deleteAllMembers}
+              onClick={deleteAllPortfolios}
             >
               Delete All
             </button>
@@ -299,26 +176,7 @@ const Contacts = ({ color }) => {
                 >
                   Email
                 </th>
-                <th
-                  className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
-                >
-                  Poste
-                </th>
-                <th
-                  className={
-                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
-                >
-                  Team
-                </th>
+
                 <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
@@ -332,8 +190,8 @@ const Contacts = ({ color }) => {
               </tr>
             </thead>
             <tbody>
-              {members.map((member) => (
-                <tr key={member.id}>
+              {portfolios.map((portfolio) => (
+                <tr key={portfolio.id}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <img
                       src={
@@ -352,28 +210,23 @@ const Contacts = ({ color }) => {
                     ></span>
                   </th>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.firstName}
+                    {portfolio.firstName}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.lastName}
+                    {portfolio.lastName}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.phoneNumber}
+                    {portfolio.phoneNumber}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.email}
+                    {portfolio.email}
                   </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.poste}
-                  </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.team.name}
-                  </td>
+
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteMember(member.firstName)}
+                      onClick={deletePortfolio(portfolio.id)}
                     >
                       Delete
                     </button>
@@ -381,7 +234,7 @@ const Contacts = ({ color }) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateMember(member.firstName)}
+                      onClick={updatePortfolio(portfolio.id)}
                     >
                       Update
                     </button>
@@ -396,12 +249,12 @@ const Contacts = ({ color }) => {
   );
 };
 
-export default Contacts;
+export default Portfolios;
 
-Contacts.defaultProps = {
+Portfolios.defaultProps = {
   color: "light",
 };
 
-Contacts.propTypes = {
+Portfolios.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };

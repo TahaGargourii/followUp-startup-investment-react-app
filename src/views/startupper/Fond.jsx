@@ -1,28 +1,28 @@
 import React, { useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
-import Startups from "services/startup.service.jsx";
-const Startup = ({ color }, startupID) => {
+import Fonds from "services/fond.service.jsx";
+const Fond = ({ color }, fondID) => {
   const [name, setName] = useState("");
-  var StartupData = {
+  var FondData = {
     name: name,
   };
-  const [startups, setStartup] = useState([]);
+  const [fonds, setFond] = useState([]);
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    Startups.getStartups()
+    Fonds.getFonds()
       .then((res) => {
-        console.log("getStartups", res.data);
-        setStartup(res.data);
+        console.log("getFonds", res.data);
+        setFond(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  const addStartup = () => {
-    console.log("addStartup");
-    Startups.createStartup(StartupData)
+  const addFond = () => {
+    console.log("addFond");
+    Fonds.createFond(FondData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -31,9 +31,9 @@ const Startup = ({ color }, startupID) => {
       });
   };
 
-  const updateStartup = (id, StartupData) => {
-    console.log("updateStartup");
-    Startups.updateStartup(id, StartupData)
+  const updateFond = (id, FondData) => {
+    console.log("updateFond");
+    Fonds.updateFond(id, FondData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -42,9 +42,9 @@ const Startup = ({ color }, startupID) => {
       });
   };
 
-  const deleteAllStartups = () => {
-    console.log("deleteAllStartups");
-    Startups.deleteAllStartups()
+  const deleteAllFonds = () => {
+    console.log("deleteAllFonds");
+    Fonds.deleteAllFonds()
       .then((res) => {
         console.log(res.data.report);
       })
@@ -53,9 +53,9 @@ const Startup = ({ color }, startupID) => {
       });
   };
 
-  const deleteStartup = (id) => {
-    console.log("deleteStartup");
-    Startups.deleteStartup(id)
+  const deleteFond = (id) => {
+    console.log("deleteFond");
+    Fonds.deleteFond(id)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -69,7 +69,7 @@ const Startup = ({ color }, startupID) => {
         <div className="rounded-t bg-white mb-0 px-6 py-6">
           <div className="text-center flex justify-between">
             <h6 className="text-blueGray-700 text-xl font-bold">
-              Startup Information
+              Fond Information
             </h6>
           </div>
         </div>
@@ -82,7 +82,7 @@ const Startup = ({ color }, startupID) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Startup Name
+                    Fond Name
                   </label>
                   <input
                     type="text"
@@ -101,7 +101,7 @@ const Startup = ({ color }, startupID) => {
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={addStartup}
+              onClick={addFond}
             >
               Sumbit
             </button>
@@ -123,14 +123,14 @@ const Startup = ({ color }, startupID) => {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Startups
+                Fonds
               </h3>
             </div>
 
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={deleteAllStartups}
+              onClick={deleteAllFonds}
             >
               Delete All
             </button>
@@ -149,7 +149,7 @@ const Startup = ({ color }, startupID) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Startup Name
+                  Fond Name
                 </th>
 
                 <th
@@ -165,17 +165,17 @@ const Startup = ({ color }, startupID) => {
               </tr>
             </thead>
             {/*   <tbody>
-              {startups.map((startup) => (
-                <tr key={startup.id}>
+              {fonds.map((fond) => (
+                <tr key={fond.id}>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {startup.name}
+                    {fond.name}
                   </td>
 
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteStartup(startup.id)}
+                      onClick={deleteFond(fond.id)}
                     >
                       Delete
                     </button>
@@ -183,7 +183,7 @@ const Startup = ({ color }, startupID) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateStartup(startup.firstName)}
+                      onClick={updateFond(fond.firstName)}
                     >
                       Update
                     </button>
@@ -198,12 +198,12 @@ const Startup = ({ color }, startupID) => {
   );
 };
 
-export default Startup;
+export default Fond;
 
-Startup.defaultProps = {
+Fond.defaultProps = {
   color: "light",
 };
 
-Startup.propTypes = {
+Fond.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };

@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import axios from "axios";
 import PropTypes from "prop-types";
 import Teams from "services/teams.service.jsx";
-// components
-
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
 const Team = ({ color }) => {
   const [name, setName] = useState("");
@@ -25,7 +21,7 @@ const Team = ({ color }) => {
       });
   }, []);
 
-  const addTeam = (TeamData) => {
+  const addTeam = () => {
     console.log("addTeam");
     Teams.addTeam(TeamData)
       .then((res) => {
