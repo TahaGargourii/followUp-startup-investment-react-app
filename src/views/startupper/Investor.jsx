@@ -7,26 +7,25 @@ import PropTypes from "prop-types";
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
-const Contacts = ({ color }) => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+const Investors = ({ color }) => {
+  const [name, setName] = useState("");
+  const [investingStages, setInvestingStages] = useState("");
+  const [ticketSize, setTicketsize] = useState("");
+  
   const [email, setEmail] = useState("");
-  const [poste, setPost] = useState("");
-  const [teamId, setTeamId] = useState("");
-  var MemberData = {
-    firstName: firstName,
-    lastName: lastName,
-    phoneNumber: phoneNumber,
-    email: email,
-    poste: poste,
-    teamId: teamId,
-  };
+  const [post, setPost] = useState("");
+  const [investorId, setInvestorId] = useState("");
 
-  const addMember = () => {
-    console.log(MemberData);
+  var InvestorData = {
+    name: name,
+    investingStages: investingStages,
+    ticketSize: ticketSize,
+  };
+  
+  const addInvestor = () => {
+    console.log(InvestorData);
     axios
-      .post("http://localhost:8080/api/members", MemberData)
+      .post("http://localhost:8080/api/investors", InvestorData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -35,10 +34,10 @@ const Contacts = ({ color }) => {
       });
   };
 
-  const deleteAllMembers = () => {
-    console.log(MemberData);
+  const deleteAllInvestors = () => {
+    console.log(InvestorData);
     axios
-      .delete("http://localhost:8080/api/members", MemberData)
+      .delete("http://localhost:8080/api/investors", InvestorData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -47,9 +46,9 @@ const Contacts = ({ color }) => {
       });
   };
 
-  const deleteMember = (id) => {
+  const deleteInvestor = (id) => {
     axios
-      .delete("http://localhost:8080/api/members/1")
+      .delete("http://localhost:8080/api/investors/1")
       .then((res) => {
         console.log(res.data.report);
       })
@@ -58,10 +57,10 @@ const Contacts = ({ color }) => {
       });
   };
 
-  const updateMember = (id) => {
-    console.log(MemberData);
+  const updateInvestor = (id) => {
+    console.log(InvestorData);
     axios
-      .put("http://localhost:8080/api/members/" + id, MemberData)
+      .put("http://localhost:8080/api/investors/" + id, InvestorData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -69,28 +68,32 @@ const Contacts = ({ color }) => {
         console.log(err);
       });
   };
-  const [members, setMember] = useState([]);
+  const [investors, setInvestor] = useState([]);
   /*  const [startups, setStartups] = useState([]);
   const [investors, setInvestors] = useState([]);
   const [isFetching, setFetching] = useState(false); */
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/members")
+      .get("http://localhost:8080/api/investors")
       .then((res) => {
         console.log("hello " + res.data.data);
-        setMember(res.data.data);
+        setInvestor(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log('here',user);
+  
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
         <div className="rounded-t bg-white mb-0 px-6 py-6">
           <div className="text-center flex justify-between">
             <h6 className="text-blueGray-700 text-xl font-bold">
-              Member Information
+              Investor Information
             </h6>
           </div>
         </div>
@@ -103,14 +106,14 @@ const Contacts = ({ color }) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    First Name
+                    Investor Name
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setFirstName(e.target.value);
+                      setName(e.target.value);
                     }}
                   />
                 </div>
@@ -121,14 +124,14 @@ const Contacts = ({ color }) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Last Name
+                    Investing Stages
                   </label>
                   <input
                     type="email"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setLastName(e.target.value);
+                      setInvestingStages(e.target.value);
                     }}
                   />
                 </div>
@@ -139,14 +142,14 @@ const Contacts = ({ color }) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Phone Number
+                    ticketSize
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setPhoneNumber(e.target.value);
+                      setTicketsize(e.target.value);
                     }}
                   />
                 </div>
@@ -163,9 +166,9 @@ const Contacts = ({ color }) => {
                     type="email"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
-                    onChange={(e) => {
+                    /*  onChange={(e) => {
                       setEmail(e.target.value);
-                    }}
+                    }} */
                   />
                 </div>
 
@@ -180,9 +183,9 @@ const Contacts = ({ color }) => {
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
-                    onChange={(e) => {
+                    /*  onChange={(e) => {
                       setPost(e.target.value);
-                    }}
+                    }} */
                   />
                 </div>
                 <div className="relative w-full mb-3">
@@ -190,15 +193,15 @@ const Contacts = ({ color }) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Team
+                    Investor
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
-                    onChange={(e) => {
-                      setTeamId(e.target.value);
-                    }}
+                    /*  onChange={(e) => {
+                      setInvestorId(e.target.value);
+                    }} */
                   />
                 </div>
               </div>
@@ -209,7 +212,7 @@ const Contacts = ({ color }) => {
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={addMember}
+              onClick={addInvestor}
             >
               Sumbit
             </button>
@@ -231,14 +234,14 @@ const Contacts = ({ color }) => {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Members
+                Investors
               </h3>
             </div>
 
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={deleteAllMembers}
+              onClick={deleteAllInvestors}
             >
               Delete All
             </button>
@@ -267,7 +270,7 @@ const Contacts = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  First Name
+                  Investor Name
                 </th>
                 <th
                   className={
@@ -277,7 +280,7 @@ const Contacts = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Last Name
+                  Investing Stages
                 </th>
                 <th
                   className={
@@ -287,9 +290,9 @@ const Contacts = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Phone Number
+                  Ticket Size
                 </th>
-                <th
+                {/* <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
                     (color === "light"
@@ -317,7 +320,7 @@ const Contacts = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Team
+                  Investor
                 </th>
                 <th
                   className={
@@ -328,12 +331,12 @@ const Contacts = ({ color }) => {
                   }
                 >
                   Actions
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody>
-              {members.map((member) => (
-                <tr key={member.id}>
+              {investors.map((investor) => (
+                <tr key={investor.id}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <img
                       src={
@@ -352,28 +355,26 @@ const Contacts = ({ color }) => {
                     ></span>
                   </th>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.firstName}
+                    {investor.name}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.lastName}
+                    {investor.investingStages}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.phoneNumber}
+                    {investor.ticketSize}
+                  </td>
+                  {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {investor.email}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.email}
-                  </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.poste}
-                  </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {member.team.name}
-                  </td>
+                    {investor.poste}
+                  </td>  */}
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteMember(member.firstName)}
+                      onClick={deleteInvestor(investor.firstName)}
                     >
                       Delete
                     </button>
@@ -381,7 +382,7 @@ const Contacts = ({ color }) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateMember(member.firstName)}
+                      onClick={updateInvestor(investor.firstName)}
                     >
                       Update
                     </button>
@@ -396,12 +397,12 @@ const Contacts = ({ color }) => {
   );
 };
 
-export default Contacts;
+export default Investors;
 
-Contacts.defaultProps = {
+Investors.defaultProps = {
   color: "light",
 };
 
-Contacts.propTypes = {
+Investors.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };

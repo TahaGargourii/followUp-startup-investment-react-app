@@ -9,13 +9,13 @@ import HeaderStats from "components/Headers/HeaderStats.js";
 import FooterAdmin from "components/Footers/FooterAdmin.js";
 
 // views
-import Member from "views/startupper/Member";
+import Member from "views/startupper/Member.jsx";
 import Contacts from "views/startupper/Contact";
 import Teams from "views/startupper/Team";
 import StartupperSidebar from "components/Sidebar/StartupperSidebar";
 import HeaderStatsStartupper from "components/Headers/HeaderStatsStartupper";
 import Investors from "views/startupper/Investor";
-
+import Startup from "views/startupper/Startup";
 
 export default function Startupper() {
   return (
@@ -31,10 +31,8 @@ export default function Startupper() {
             <Route path="/startupper/teams" exact component={Teams} />
             <Route path="/startupper/members" exact component={Member} />
             <Redirect from="/admin" to="/admin/dashboard" />
+            <Redirect from="/startupper/startup" component={Startup} />
             <Route path="/startupper/investors" exact component={Investors} />
-
-
-
           </Switch>
           <FooterAdmin />
         </div>

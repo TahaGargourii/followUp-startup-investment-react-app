@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import Auth from '../../services/auth.service'
+import Auth from "../../services/auth.service";
 import { clippingParents } from "@popperjs/core";
 
 export default function Login() {
@@ -16,16 +16,17 @@ export default function Login() {
   };
 
   const signIn = () => {
-    if (!!!userAccount.password || !!!userAccount.username){
-      console.log('password or username is incorrect')
+    if (!!!userAccount.password || !!!userAccount.username) {
+      console.log("password or username is incorrect");
     } else {
-      Auth.login(userAccount).then((res) => {
-        console.log('login',res.data)
-        localStorage.setItem("user", JSON.stringify(res.data));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      Auth.login(userAccount)
+        .then((res) => {
+          console.log("login", res.data);
+          localStorage.setItem("user", JSON.stringify(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -92,6 +93,7 @@ export default function Login() {
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
                       onClick={signIn}
+                      to="/auth/register"
                     >
                       Sign In
                     </button>

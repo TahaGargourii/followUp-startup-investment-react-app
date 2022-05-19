@@ -7,9 +7,10 @@ import Navbar from "components/Navbars/AuthNavbar.js";
 import FooterSmall from "components/Footers/FooterSmall.js";
 
 // views
-
-import Login from "views/auth/Login.js";
-import Register from "views/auth/Register.js";
+import Login from "views/auth/Login.jsx";
+import Register from "views/auth/Register.jsx";
+import InvestorRegister from "views/auth/InvestorRegister.jsx";
+import StartupperRegister from "views/auth/StartupperRegister.jsx";
 
 export default function Auth() {
   return (
@@ -27,6 +28,16 @@ export default function Auth() {
           <Switch>
             <Route path="/auth/login" exact component={Login} />
             <Route path="/auth/register" exact component={Register} />
+            <Route
+              path="/auth/investorRegister"
+              exact
+              component={InvestorRegister}
+            />
+            <Route
+              path="/auth/startupperRegister"
+              exact
+              component={StartupperRegister}
+            />
             <Redirect from="/auth" to="/auth/login" />
           </Switch>
           <FooterSmall absolute />
