@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 
+// METHOD DELETE UPDATE MA YEKHDMOUCH YAANY BSH IBADEL LES DONNEE MT3OU
+
+
 import axios from "axios";
 import PropTypes from "prop-types";
 import Startuppers from "services/startupper.service.jsx";

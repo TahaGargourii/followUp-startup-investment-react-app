@@ -3,6 +3,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
+
+// METHOD DELETE UPDATE MA YEKHDMOUCH 
+// DROP FILE FIL HTML CSS
+
 const Files = ({ color }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

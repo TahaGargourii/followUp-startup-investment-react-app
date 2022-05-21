@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
 import Fonds from "services/fond.service.jsx";
+
+// POST FOND BIL LIST INVESTOR W  LIST STARTUPP ILY AANDOU STARTUPPER 
+/// DELETE W UPDATE FOND LEEEEE
 const Fond = ({ color }, fondID) => {
   const [name, setName] = useState("");
   var FondData = {

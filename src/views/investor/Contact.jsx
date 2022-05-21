@@ -4,6 +4,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 
 // components
+// METHOD DELETE UPDATE MA YEKHDMOUCH 
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 

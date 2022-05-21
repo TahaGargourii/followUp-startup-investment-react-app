@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-// components
+//  LIST INVESTOR W  LIST STARTUPP ILY AANDOU STARTUPPER 
+// DROP FILE FIL HTML
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 

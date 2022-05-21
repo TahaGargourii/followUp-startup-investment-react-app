@@ -5,6 +5,9 @@ import Teams from "services/teams.service.jsx";
 import Members from "services/member.service.jsx";
 // components
 
+// METHOD DELETE UPDATE MA YEKHDMOUCH 
+/// POST MA TEKHDEMECH KHATER  TEAMS LEZEM DROPDOWN LIST 
+
 const Member = ({ color }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");

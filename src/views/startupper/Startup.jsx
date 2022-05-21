@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 
+// METHOD DELETE UPDATE MA YEKHDMOUCH 
+
+
 import PropTypes from "prop-types";
 import Startups from "services/startup.service.jsx";
 const Startup = ({ color }, startupID) => {

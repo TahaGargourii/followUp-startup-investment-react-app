@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
 import Files from "services/file.service.jsx";
+
+// METHOD DELETE UPDATE MA YEKHDMOUCH 
+// DROP FILE FIL HTML CSS
+
+
 const File = ({ color }, fileID) => {
   const [name, setName] = useState("");
   var FileData = {
