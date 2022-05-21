@@ -11,13 +11,14 @@ import "assets/styles/tailwind.css";
 
 // layouts
 import Admin from "layouts/Admin.js";
+
 import Auth from "layouts/Auth.js";
 
 // views without layouts
 
-import Landing from "views/Landing.js";
-import Profile from "views/Profile.js";
-import Index from "views/Index.js";
+import Landing from "views/Landing.jsx";
+import Profile from "views/Profile.jsx";
+import Index from "views/Index.jsx";
 import Investor from "layouts/Investor";
 import Startupper from "layouts/Startupper";
 import requireAuth from "./Helpers/isAuthenticated";

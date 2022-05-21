@@ -1,17 +1,15 @@
 import React from "react";
-import { useEffect, useLayoutEffect } from "react/cjs/react.development";
-import Teams from '../../services/teams.service'
-import authHeader from '../../common/authHeader'
+import { useEffect } from "react/cjs/react.development";
+import Teams from "../../services/teams.service.jsx";
 
-export default function Register() {
-
-
+export default function InvestorRegister() {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(' useEffect here',user);
-    console.log(' useEffect getTeams')
-    Teams.getTeams().then((res) => {
-        console.log('getTeams',res.data)
+    console.log(" useEffect here", user);
+    console.log(" useEffect getTeams");
+    Teams.getTeams()
+      .then((res) => {
+        console.log("getTeams", res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -19,9 +17,10 @@ export default function Register() {
   }, []);
 
   const getteams = () => {
-    console.log('getTeams')
-    Teams.getTeams().then((res) => {
-        console.log('getTeams',res.data)
+    console.log("getTeams");
+    Teams.getTeams()
+      .then((res) => {
+        console.log("getTeams", res.data);
       })
       .catch((err) => {
         console.log(err);

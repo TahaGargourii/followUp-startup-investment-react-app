@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {login} from '../../redux/actions/auth'
+
+import Auth from "../../services/auth.service";
 import { clippingParents } from "@popperjs/core";
 import {
   REGISTER_SUCCESS,
@@ -32,8 +34,8 @@ export default function Login() {
   const [credentials, setcredentials] = useState(false);
 
   const signIn = () => {
-    if (!!!userAccount.password || !!!userAccount.username){
-      console.log('password or username is incorrect')
+    if (!!!userAccount.password || !!!userAccount.username) {
+      console.log("password or username is incorrect");
     } else {
       dispatch(login(userAccount, setcredentials)).then((res) => {
         console.log('switching cases',res?.data?.user?.userRole);
@@ -125,6 +127,7 @@ export default function Login() {
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
                       onClick={signIn}
+                      to="/auth/register"
                     >
                       Sign In
                     </button>

@@ -7,6 +7,7 @@ const Teams = {
   getUserTeam: (params) => base.getItems("teams", params),
   getAssignedUserTeam: (params) => base.getItems("teams", params),
   deleteTeam: (params) => base.deleteItem("teams", params),
+  deleteAllTeams: () => base.deleteItem("teams"),
 };
 
 export default Teams;

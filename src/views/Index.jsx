@@ -23,14 +23,16 @@ export default function Index() {
                 <a
                   target="_blank"
                   className="get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-lightBlue-500 active:bg-lightBlue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+                  to="/auth/investorRegister"
                 >
-                   investor
+                  investor
                 </a>
                 <a
                   className="github-star ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
                   target="_blank"
+                  to="/auth/startupperRegister"
                 >
-                   Startupper
+                  Startupper
                 </a>
               </div>
             </div>

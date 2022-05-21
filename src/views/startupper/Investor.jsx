@@ -7,22 +7,25 @@ import PropTypes from "prop-types";
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
-const Teams = ({ color }) => {
+const Investors = ({ color }) => {
   const [name, setName] = useState("");
-  // const [lastName, setLastName] = useState("");
-  // const [phoneNumber, setPhoneNumber] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [poste, setPost] = useState("");
-  // const [teamId, setTeamId] = useState("");
-  var TeamData = {
+  const [investingStages, setInvestingStages] = useState("");
+  const [ticketSize, setTicketsize] = useState("");
+  
+  const [email, setEmail] = useState("");
+  const [post, setPost] = useState("");
+  const [investorId, setInvestorId] = useState("");
+
+  var InvestorData = {
     name: name,
-   
+    investingStages: investingStages,
+    ticketSize: ticketSize,
   };
-
-  const addTeam = () => {
-    console.log(TeamData);
+  
+  const addInvestor = () => {
+    console.log(InvestorData);
     axios
-      .post("http://localhost:8080/api/teams", TeamData)
+      .post("http://localhost:8080/api/investors", InvestorData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -31,10 +34,10 @@ const Teams = ({ color }) => {
       });
   };
 
-  const deleteAllTeams = () => {
-    console.log(TeamData);
+  const deleteAllInvestors = () => {
+    console.log(InvestorData);
     axios
-      .delete("http://localhost:8080/api/teams", TeamData)
+      .delete("http://localhost:8080/api/investors", InvestorData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -43,9 +46,9 @@ const Teams = ({ color }) => {
       });
   };
 
-  const deleteTeam = (id) => {
+  const deleteInvestor = (id) => {
     axios
-      .delete("http://localhost:8080/api/teams/1")
+      .delete("http://localhost:8080/api/investors/1")
       .then((res) => {
         console.log(res.data.report);
       })
@@ -54,10 +57,10 @@ const Teams = ({ color }) => {
       });
   };
 
-  const updateTeam = (id) => {
-    console.log(TeamData);
+  const updateInvestor = (id) => {
+    console.log(InvestorData);
     axios
-      .put("http://localhost:8080/api/teams/" + id, TeamData)
+      .put("http://localhost:8080/api/investors/" + id, InvestorData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -65,28 +68,32 @@ const Teams = ({ color }) => {
         console.log(err);
       });
   };
-  const [teams, setTeam] = useState([]);
+  const [investors, setInvestor] = useState([]);
   /*  const [startups, setStartups] = useState([]);
   const [investors, setInvestors] = useState([]);
   const [isFetching, setFetching] = useState(false); */
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/teams")
+      .get("http://localhost:8080/api/investors")
       .then((res) => {
         console.log("hello " + res.data.data);
-        setTeam(res.data.data);
+        setInvestor(res.data.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  console.log('here',user);
+  
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
         <div className="rounded-t bg-white mb-0 px-6 py-6">
           <div className="text-center flex justify-between">
             <h6 className="text-blueGray-700 text-xl font-bold">
-              Team Information
+              Investor Information
             </h6>
           </div>
         </div>
@@ -99,7 +106,7 @@ const Teams = ({ color }) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Team Name
+                    Investor Name
                   </label>
                   <input
                     type="text"
@@ -111,43 +118,43 @@ const Teams = ({ color }) => {
                   />
                 </div>
               </div>
-              {/* <div className="w-full lg:w-6/12 px-4">
+              <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Last Name
+                    Investing Stages
                   </label>
                   <input
                     type="email"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setLastName(e.target.value);
+                      setInvestingStages(e.target.value);
                     }}
                   />
                 </div>
-              </div> */}
-              {/* <div className="w-full lg:w-6/12 px-4">
+              </div>
+              <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Phone Number
+                    ticketSize
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setPhoneNumber(e.target.value);
+                      setTicketsize(e.target.value);
                     }}
                   />
                 </div>
-              </div> */}
-              {/* <div className="w-full lg:w-6/12 px-4">
+              </div>
+              <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
@@ -159,9 +166,9 @@ const Teams = ({ color }) => {
                     type="email"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
-                    onChange={(e) => {
+                    /*  onChange={(e) => {
                       setEmail(e.target.value);
-                    }}
+                    }} */
                   />
                 </div>
 
@@ -176,9 +183,9 @@ const Teams = ({ color }) => {
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
-                    onChange={(e) => {
+                    /*  onChange={(e) => {
                       setPost(e.target.value);
-                    }}
+                    }} */
                   />
                 </div>
                 <div className="relative w-full mb-3">
@@ -186,18 +193,18 @@ const Teams = ({ color }) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Team
+                    Investor
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
-                    onChange={(e) => {
-                      setTeamId(e.target.value);
-                    }}
+                    /*  onChange={(e) => {
+                      setInvestorId(e.target.value);
+                    }} */
                   />
                 </div>
-              </div> */}
+              </div>
             </div>
 
             <hr className="mt-6 border-b-1 border-blueGray-300" />
@@ -205,7 +212,7 @@ const Teams = ({ color }) => {
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={addTeam}
+              onClick={addInvestor}
             >
               Sumbit
             </button>
@@ -227,14 +234,14 @@ const Teams = ({ color }) => {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Teams
+                Investors
               </h3>
             </div>
 
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={deleteAllTeams}
+              onClick={deleteAllInvestors}
             >
               Delete All
             </button>
@@ -263,9 +270,9 @@ const Teams = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Team Name
+                  Investor Name
                 </th>
-                {/* <th
+                <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
                     (color === "light"
@@ -273,9 +280,9 @@ const Teams = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Last Name
-                </th> */}
-                {/* <th
+                  Investing Stages
+                </th>
+                <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
                     (color === "light"
@@ -283,8 +290,8 @@ const Teams = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Phone Number
-                </th> */}
+                  Ticket Size
+                </th>
                 {/* <th
                   className={
                     "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
@@ -313,7 +320,7 @@ const Teams = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Team
+                  Investor
                 </th>
                 <th
                   className={
@@ -328,8 +335,8 @@ const Teams = ({ color }) => {
               </tr>
             </thead>
             <tbody>
-              {teams.map((team) => (
-                <tr key={team.id}>
+              {investors.map((investor) => (
+                <tr key={investor.id}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <img
                       src={
@@ -348,26 +355,26 @@ const Teams = ({ color }) => {
                     ></span>
                   </th>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {team.name}
+                    {investor.name}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {investor.investingStages}
+                  </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {investor.ticketSize}
                   </td>
                   {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {team.lastName}
+                    {investor.email}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {team.phoneNumber}
-                  </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {team.email}
-                  </td>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {team.poste}
-                  </td> */}
+                    {investor.poste}
+                  </td>  */}
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteTeam(team.firstName)}
+                      onClick={deleteInvestor(investor.firstName)}
                     >
                       Delete
                     </button>
@@ -375,7 +382,7 @@ const Teams = ({ color }) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateTeam(team.firstName)}
+                      onClick={updateInvestor(investor.firstName)}
                     >
                       Update
                     </button>
@@ -390,12 +397,12 @@ const Teams = ({ color }) => {
   );
 };
 
-export default Teams;
+export default Investors;
 
-Teams.defaultProps = {
+Investors.defaultProps = {
   color: "light",
 };
 
-Teams.propTypes = {
+Investors.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };
