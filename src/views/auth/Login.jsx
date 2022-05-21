@@ -37,33 +37,52 @@ export default function Login() {
     if (!!!userAccount.password || !!!userAccount.username) {
       console.log("password or username is incorrect");
     } else {
-      dispatch(login(userAccount, setcredentials)).then((res) => {
-        console.log('switching cases',res?.data?.user?.userRole);
-        switch (res?.data?.user?.userRole) {
-          case 'USER':
-            history.push('/startupper');
-            break;
-          case 'ADMIN':
-            history.push('/admin');
-            break;
-          case 'STARTUPPER':
-            history.push('/startupper');
-            break;
-          case 'INVESTOR':
-            history.push('/investor');
-            break;
-          default:
-            break;
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      dispatch(
+        login(userAccount, setcredentials)
+      )
+        .then((res) => {
+          // switch (res?.data?.user?.userRole) {
+          //   case 'USER':
+          //     history.push('/startupper');
+          //     break;
+          //   case 'ADMIN':
+          //     history.push('/admin');
+          //     break;
+          //   case 'STARTUPPER':
+          //     history.push('/startupper');
+          //     break;
+          //   case 'INVESTOR':
+          //     history.push('/investor');
+          //     break;
+          //   default:
+          //     break;
+          // }
+          // window.location.reload();
+          console.log('doing nothing')
+        })
+        .catch((e) => {
+          console.log(e, "loginError");
+        });
     }
   };
+
   if (isLoggedIn) {
-    return <Redirect to="/startupper" />;
+    var currentUser = JSON.parse(localStorage.getItem('user'));
+    console.log('islogged int ', currentUser);
+    switch (currentUser?.user?.userRole) {
+      case 'USER':
+        return <Redirect to="/startupper" />;
+      case 'ADMIN':
+        return <Redirect to="/admin" />;
+      case 'STARTUPPER':
+        return <Redirect to="/startupper" />;
+      case 'INVESTOR':
+        return <Redirect to="/investor" />;
+      default:
+        break;
+    }
   }
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">

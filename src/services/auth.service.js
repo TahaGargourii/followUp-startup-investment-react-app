@@ -1,13 +1,16 @@
 import { resolveTypeReferenceDirective } from "typescript";
 import * as base from "../common/common.api";
+import axios from "axios";
 
 // const Auth = {
 //   login: (data) => base.login("login", data),
 //   logout: () => base.getItems("logout")
 // };
+export const authbaseUrl = "http://localhost:8080";
 
 const login = (data) => {
-    return base.login("login", data).then((response) => {
+    console.log('logining',data);
+    return axios.post(authbaseUrl+ "/login", data).then((response) => {
       if (response.data.token) {
         localStorage.setItem("user", JSON.stringify(response.data));
         console.log('auth.service', response.data);
