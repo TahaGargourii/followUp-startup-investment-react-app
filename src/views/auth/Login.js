@@ -1,34 +1,67 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
-
-import Auth from '../../services/auth.service'
+import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import {login} from '../../redux/actions/auth'
 import { clippingParents } from "@popperjs/core";
+import {
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+  SET_MESSAGE,
+} from "../../redux/actions/types";
 
 export default function Login() {
   ///  let navigate = useNavigate();
+  const history = new useHistory();
+  const dispatch = useDispatch();
+
+  const { isLoggedIn } = useSelector((state) => state.authReducer);
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   var userAccount = {
     username: username,
     password: password,
   };
+  const [credentials, setcredentials] = useState(false);
 
   const signIn = () => {
     if (!!!userAccount.password || !!!userAccount.username){
       console.log('password or username is incorrect')
     } else {
-      Auth.login(userAccount).then((res) => {
-        console.log('login',res.data)
-        localStorage.setItem("user", JSON.stringify(res.data));
+      dispatch(login(userAccount, setcredentials)).then((res) => {
+        console.log('switching cases',res?.data?.user?.userRole);
+        switch (res?.data?.user?.userRole) {
+          case 'USER':
+            history.push('/startupper');
+            break;
+          case 'ADMIN':
+            history.push('/admin');
+            break;
+          case 'STARTUPPER':
+            history.push('/startupper');
+            break;
+          case 'INVESTOR':
+            history.push('/investor');
+            break;
+          default:
+            break;
+        }
       })
       .catch((err) => {
         console.log(err);
       });
     }
   };
-
+  if (isLoggedIn) {
+    return <Redirect to="/startupper" />;
+  }
   return (
     <>
       <div className="container mx-auto px-4 h-full">
