@@ -7,6 +7,12 @@ import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPageVisits from "components/Cards/CardPageVisits.js";
 import HeaderStats from "components/Headers/HeaderStats";
 
+//// CARD TOTAL STARTUPS  W POTRFOLIO VALUE W TOTAL REVENUE
+// PIE CHART INVESTED FUNDS KIMA F DESIGN
+// 
+
+
+
 export default function Dashboard() {
   return (
     <>

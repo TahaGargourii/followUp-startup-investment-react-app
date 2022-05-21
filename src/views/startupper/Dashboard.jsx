@@ -1,6 +1,9 @@
 import React from "react";
 
 // NE9ESS DES CARD 
+// CARD TOTAL FUNDS W CARD TOTAL REVENUE 
+// PIE CHART REPATITION MTAA LFUNDS KIMA F DESIGN 
+
 
 import CardLineChart from "components/Cards/CardLineChart.js";
 import CardBarChart from "components/Cards/CardBarChart.js";
