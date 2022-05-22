@@ -17,6 +17,7 @@ import HeaderStatsStartupper from "components/Headers/HeaderStatsStartupper";
 import Investors from "views/startupper/Investor.jsx";
 import Startup from "views/startupper/Startup.jsx";
 import File from "views/startupper/File.jsx";
+import Fond from "views/startupper/Fond";
 
 export default function Startupper() {
   return (
@@ -36,8 +37,9 @@ export default function Startupper() {
             <Route from="/startupper/startup" component={requireAuth(Startup)} />
             <Route path="/startupper/files" exact component={requireAuth(File)} />
             <Route path="/startupper/investors" exact component={requireAuth(Investors)} />
+            <Route from="/startupper/fond" component={requireAuth(Fond)} />
 
-            {/*       <Route path="/startupper/AddStartup" exact component={Addstartup} /> */}
+            {/*  <Route path="/startupper/AddStartup" exact component={Addstartup} /> */}
           </Switch>
           <FooterAdmin />
         </div>

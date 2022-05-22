@@ -49,7 +49,10 @@ import {
   };
 
   export const registerInvestor = (data) => (dispatch) => {
-    return Auth.registerInvestor(data).then(
+    let user = {
+      user : data
+    }
+    return Auth.registerInvestor(user).then(
       (response) => {
         dispatch({
           type: REGISTER_SUCCESS,
