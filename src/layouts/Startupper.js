@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import FooterAdmin from "components/Footers/FooterAdmin.js";
+import requireAuth from "../Helpers/isAuthenticated";
 
 // views
 import Dashboard from "views/startupper/Dashboard.jsx";
@@ -16,6 +17,7 @@ import HeaderStatsStartupper from "components/Headers/HeaderStatsStartupper";
 import Investors from "views/startupper/Investor.jsx";
 import Startup from "views/startupper/Startup.jsx";
 import File from "views/startupper/File.jsx";
+
 export default function Startupper() {
   return (
     <>
@@ -26,14 +28,14 @@ export default function Startupper() {
         <HeaderStatsStartupper />
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
-            <Route path="/startupper/dashboard" exact component={Dashboard} />
-            <Route path="/startupper/contacts" exact component={Contacts} />
-            <Route path="/startupper/teams" exact component={Teams} />
-            <Route path="/startupper/members" exact component={Member} />
+            <Route path="/startupper/dashboard" exact component={requireAuth(Dashboard)} />
+            <Route path="/startupper/contacts" exact component={requireAuth(Contacts)} />
+            <Route path="/startupper/teams" exact component={requireAuth(Teams)} />
+            <Route path="/startupper/members" exact component={requireAuth(Member)} />
             <Redirect from="/admin" to="/admin/dashboard" />
-            <Route from="/startupper/startup" component={Startup} />
-            <Route path="/startupper/files" exact component={File} />
-            <Route path="/startupper/investors" exact component={Investors} />
+            <Route from="/startupper/startup" component={requireAuth(Startup)} />
+            <Route path="/startupper/files" exact component={requireAuth(File)} />
+            <Route path="/startupper/investors" exact component={requireAuth(Investors)} />
 
             {/*       <Route path="/startupper/AddStartup" exact component={Addstartup} /> */}
           </Switch>

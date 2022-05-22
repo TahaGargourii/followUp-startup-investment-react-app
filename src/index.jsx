@@ -11,7 +11,6 @@ import "assets/styles/tailwind.css";
 
 // layouts
 import Admin from "layouts/Admin.js";
-
 import Auth from "layouts/Auth.js";
 
 // views without layouts
@@ -37,14 +36,14 @@ ReactDOM.render(
     <BrowserRouter>
         <Switch>
           {/* add routes with layouts */}
-          <Route path="/admin" component={requireAuth(Admin)} />
+          <Route path="/admin" component={Admin} />
           <Route path="/auth" component={Auth} />
-          <Route path="/investor" component={requireAuth(Investor)} />
-          <Route path="/startupper" component={requireAuth(Startupper)} />
+          <Route path="/investor" component={Investor} />
+          <Route path="/startupper" component={Startupper} />
           {/* add routes without layouts */}
           <Route path="/landing" exact component={Landing} />
           <Route path="/profile" exact component={Profile} />
-          <Route path="/" exact component={Index} /> 
+          <Route path="/index" exact component={Index} /> 
           
           {/* add redirect for first page */}
           {/* <Redirect from="*" to="/" /> */}

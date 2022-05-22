@@ -23,11 +23,18 @@ const login = (data) => {
 const logout = () => {
 
 }
-const register = () => {
 
+const registerInvestor = (data) => {
+  return axios.post(authbaseUrl + "/api/investors", data);
 }
+
+const registerStartuper = (data) => {
+  return axios.post(authbaseUrl + "/api/startuppers", data);
+}
+
 export default {
-  register,
+  registerInvestor,
+  registerStartuper,
   login,
   logout,
 };

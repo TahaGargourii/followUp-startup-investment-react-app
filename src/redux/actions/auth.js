@@ -47,3 +47,80 @@ import {
       }
     );
   };
+
+  export const registerInvestor = (data) => (dispatch) => {
+    return Auth.registerInvestor(data).then(
+      (response) => {
+        dispatch({
+          type: REGISTER_SUCCESS,
+        });
+  
+        dispatch({
+          type: SET_MESSAGE,
+          payload: response.data.message,
+        });
+  
+        return Promise.resolve();
+      },
+      (error) => {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+  
+        dispatch({
+          type: REGISTER_FAIL,
+        });
+  
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
+  
+        return Promise.reject();
+      }
+    );
+  };
+
+  export const registerStartuper = (data) => (dispatch) => {
+    console.log("registerStartuper ",data);
+    let user = {
+      user : data
+    }
+    console.log("registerStartuper ",user);
+    return Auth.registerStartuper(user).then(
+      (response) => {
+        dispatch({
+          type: REGISTER_SUCCESS,
+        });
+  
+        dispatch({
+          type: SET_MESSAGE,
+          payload: response.data.message,
+        });
+  
+        return Promise.resolve();
+      },
+      (error) => {
+        const message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+  
+        dispatch({
+          type: REGISTER_FAIL,
+        });
+  
+        dispatch({
+          type: SET_MESSAGE,
+          payload: message,
+        });
+  
+        return Promise.reject();
+      }
+    );
+  };

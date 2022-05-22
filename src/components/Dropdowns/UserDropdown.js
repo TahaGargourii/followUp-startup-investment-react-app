@@ -1,5 +1,6 @@
 import React from "react";
 import { createPopper } from "@popperjs/core";
+import { LOGOUT } from "redux/actions/types";
 
 const UserDropdown = () => {
   // dropdown props
@@ -15,6 +16,12 @@ const UserDropdown = () => {
   const closeDropdownPopover = () => {
     setDropdownPopoverShow(false);
   };
+
+  const Logout = () => {
+    localStorage.clear();
+    window.location.reload();  
+  }
+
   return (
     <>
       <a
@@ -50,18 +57,18 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Action
+          Profile
         </a>
         <a
           href="#pablo"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
-          onClick={(e) => e.preventDefault()}
+          onClick={Logout}
         >
-          Another action
+          Logout
         </a>
-        <a
+       {/*  <a
           href="#pablo"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
@@ -79,7 +86,7 @@ const UserDropdown = () => {
           onClick={(e) => e.preventDefault()}
         >
           Seprated link
-        </a>
+        </a> */}
       </div>
     </>
   );

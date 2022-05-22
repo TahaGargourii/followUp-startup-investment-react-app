@@ -7,6 +7,7 @@ import AdminNavbar from "components/Navbars/AdminNavbar.js";
 
 import HeaderStatsStartupper from "components/Headers/HeaderStatsStartupper.js";
 import FooterAdmin from "components/Footers/FooterAdmin.js";
+import requireAuth from "../Helpers/isAuthenticated";
 
 // views
 import InvestorSidebar from "components/Sidebar/InvestorSidebar";
@@ -25,17 +26,17 @@ export default function Investor() {
         <HeaderStatsStartupper />
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
-            <Route path="/investor/dashboard" exact component={Dashboard} />
-            <Route path="/investor/contacts" exact component={Contact} />
-            <Route path="/investor/portfolios" exact component={Startup} />
+            <Route path="/investor/dashboard" exact component={requireAuth(Dashboard)} />
+            <Route path="/investor/contacts" exact component={requireAuth(Contact)} />
+            <Route path="/investor/portfolios" exact component={requireAuth(Startup)} />
 
             <Route
               path="/investor/startupDashboard"
               exact
-              component={StartupDashboard}
+              component={requireAuth(StartupDashboard)}
             />
 
-            <Route path="/investor/files" exact component={File} />
+            <Route path="/investor/files" exact component={requireAuth(File)} />
           </Switch>
           <FooterAdmin />
         </div>

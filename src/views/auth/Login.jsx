@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate,useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
@@ -17,11 +17,25 @@ import {
   LOGOUT,
   SET_MESSAGE,
 } from "../../redux/actions/types";
+import Alert from "components/Alerts/alert";
+import Notification from "components/Alerts/Notification";
 
 export default function Login() {
   ///  let navigate = useNavigate();
   const history = new useHistory();
   const dispatch = useDispatch();
+  const [showAlert, setshowAlert] = useState(false);
+  const [credentials, setcredentials] = useState(false);
+
+  const [errors, setErrors] = useState({
+    UserName: "",
+    Password: "",
+  });
+  // Notification
+  const [alert, setAlert] = useState({
+    alertError: false,
+    alertSuccess: false,
+  });
 
   const { isLoggedIn } = useSelector((state) => state.authReducer);
 
@@ -31,60 +45,132 @@ export default function Login() {
     username: username,
     password: password,
   };
-  const [credentials, setcredentials] = useState(false);
+
+  useEffect(() => {
+    if (credentials) {
+      const errorsMsg = {
+        UserName: validators.Email(userAccount.username),
+        Password: validators.Password(userAccount.password, credentials),
+      };
+
+      setErrors(errorsMsg);
+      setAlert((prevAlert) => ({ ...prevAlert, alertError: true }));
+      setTimeout(() => {
+        setAlert((prevData) => ({ ...prevData, alertError: false }));
+      }, 4000);
+    }
+    if (!credentials) {
+      setErrors({
+        ...errors,
+        Password: "",
+      });
+      setAlert((prevData) => ({ ...prevData, alertError: false }));
+    }
+  }, [credentials]);
 
   const signIn = () => {
-    if (!!!userAccount.password || !!!userAccount.username) {
-      console.log("password or username is incorrect");
-    } else {
-      dispatch(
-        login(userAccount, setcredentials)
-      )
-        .then((res) => {
-          // switch (res?.data?.user?.userRole) {
-          //   case 'USER':
-          //     history.push('/startupper');
-          //     break;
-          //   case 'ADMIN':
-          //     history.push('/admin');
-          //     break;
-          //   case 'STARTUPPER':
-          //     history.push('/startupper');
-          //     break;
-          //   case 'INVESTOR':
-          //     history.push('/investor');
-          //     break;
-          //   default:
-          //     break;
-          // }
-          // window.location.reload();
-          console.log('doing nothing')
-        })
-        .catch((e) => {
-          console.log(e, "loginError");
-        });
+    const errorsMsg = {
+      UserName: validators.Email(userAccount.username),
+      Password: validators.Password(userAccount.password, credentials),
+    };
+    const fieldsWithErrors = Object.keys(errorsMsg).filter(
+      (key) => errorsMsg[key]
+    );
+    if (fieldsWithErrors.length) {
+      setErrors(errorsMsg);
+      setAlert((prevAlert) => ({ ...prevAlert, alertError: true }));
+      setTimeout(() => {
+        setAlert((prevData) => ({ ...prevData, alertError: false }));
+      }, 4000);
+      return;
     }
+
+    dispatch(
+      login(userAccount, setcredentials)
+    )
+      .then((res) => {
+        console.log('doing nothing',res)
+        setAlert((prevAlert) => ({ ...prevAlert, alertSuccess: true }));
+        setTimeout(() => {
+          setAlert((prevData) => ({ ...prevData, alertError: false }));
+        }, 4000);
+        var currentUser = JSON.parse(localStorage.getItem('user'));
+        if (currentUser.token != null) {
+          console.log('islogged in to dashboard ', currentUser);
+          switch (currentUser?.user?.userRole) {
+            case 'ADMIN':
+              return <Redirect to="/admin" />;
+            case 'STARTUPPER':
+              return <Redirect to="/startupper/dashboard" />;
+            case 'INVESTOR':
+              return <Redirect to="/investor/dashboard" />;
+            default:
+              break;
+          }
+        }
+      })
+      .catch((e) => {
+        console.log(e, "loginError");
+      });
+    
   };
 
-  if (isLoggedIn) {
-    var currentUser = JSON.parse(localStorage.getItem('user'));
-    console.log('islogged int ', currentUser);
+  const validators = {
+    Email: (value) => {
+      if (value === "") {
+        return "champ obligatoire";
+      }
+      return "";
+    },
+    Password: (value, credentials) => {
+      if (value === "") {
+        return "champ obligatoire";
+      }
+      //const regexPwd = /^((?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9!@#$%.,&*]{8,})$/;
+      //const checkPwd = regexPwd.test(String(value));
+      if (credentials) {
+        return "pwd invalid";
+      }
+      return "";
+    },
+  };
+
+  var currentUser = JSON.parse(localStorage.getItem('user'));
+  if (isLoggedIn && currentUser.token != null) {
+    console.log('islogged in to dashboard ', currentUser);
     switch (currentUser?.user?.userRole) {
-      case 'USER':
-        return <Redirect to="/startupper" />;
       case 'ADMIN':
         return <Redirect to="/admin" />;
       case 'STARTUPPER':
-        return <Redirect to="/startupper" />;
+        return <Redirect to="/startupper/dashboard" />;
       case 'INVESTOR':
-        return <Redirect to="/investor" />;
+        return <Redirect to="/investor/dashboard" />;
       default:
         break;
     }
   }
 
+  // handle notification
+  const handleCloseError = () => {
+    setAlert({ ...alert, alertError: false });
+  };
+
+  const handleCloseSuccess = () => {
+    setAlert({ ...alert, alertSuccess: false });
+  };
+
+  console.log('here',errors);
   return (
     <>
+      <Notification
+        alertSuccess={alert.alertSuccess}
+        alertError={alert.alertError}
+        handleCloseError={handleCloseError}
+        handleCloseSuccess={handleCloseSuccess}
+        errorsPwd={errors.Password}
+        errorsUserName={errors.UserName}
+      />
+
       <div className="container mx-auto px-4 h-full">
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full lg:w-4/12 px-4">
@@ -146,7 +232,7 @@ export default function Login() {
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
                       onClick={signIn}
-                      to="/auth/register"
+                      //to="/auth/register"
                     >
                       Sign In
                     </button>

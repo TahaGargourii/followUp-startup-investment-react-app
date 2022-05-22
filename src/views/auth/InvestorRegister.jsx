@@ -1,6 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
+import {registerInvestor} from '../../redux/actions/auth'
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory} from "react-router-dom";
 
 export default function InvestorRegister() {
+  
+  const history = new useHistory();
+  const dispatch = useDispatch();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+
+  var userAccount = {
+    username: username,
+    password: password,
+    email: email,
+    name: name
+  };
+
+  const signUp = () => {
+    if (!!!userAccount.password || !!!userAccount.username) {
+      console.log("password or username is incorrect");
+    } else {
+      dispatch(
+        registerInvestor(userAccount)
+      )
+        .then((res) => {
+          console.log('doing nothing',res)
+        })
+        .catch((e) => {
+          console.log(e, "loginError");
+        });
+    }
+  };
+
+
   return (
     <>
       <div className="container mx-auto px-4 h-full">
@@ -24,6 +60,9 @@ export default function InvestorRegister() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Name"
+                      onChange={(e) => {
+                        setName(e.target.value);
+                      }}
                     />
                   </div>
 
@@ -38,6 +77,9 @@ export default function InvestorRegister() {
                       type="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
                     />
                   </div>
 
@@ -52,6 +94,9 @@ export default function InvestorRegister() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                       onChange={(e) => {
+                        setPassword(e.target.value);
+                      }}
                     />
                   </div>
 
@@ -59,6 +104,7 @@ export default function InvestorRegister() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={signUp}
                     >
                       Create Account
                     </button>
