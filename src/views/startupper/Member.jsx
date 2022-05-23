@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
-import Teams from "services/teams.service.jsx";
-import Members from "services/member.service.jsx";
+import Teams from "services/teams.service.js";
+import Members from "services/member.service.js";
 // components
 
 // METHOD DELETE UPDATE MA YEKHDMOUCH 

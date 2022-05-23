@@ -30,14 +30,18 @@ export const getItems = async (path, params) => {
       .then((response) => response.data);
   };
 
-export const insertItem = (path, data) => {
-  return axios.post(getPath(path), data, config);
+export const insertItem = async (path, data) => {
+  console.log('test',config);
+  return await axios.post(getPath(path), data, config)
+  .then((response) => response.data);
 };
 
-export const updateItem = (path, data, params) => {
-  return axios.put(getPath(path), data, config);
+export const updateItem = async (path, data, params) => {
+  return await axios.put(getPath(path)+ "/"+params, data, config)
+  .then((response) => response.data);
 };
 
-export const deleteItem = (path, data) => {
-  return axios.delete(getPath(path), data, config);
+export const deleteItem = async (path, data) => {
+  return await axios.delete(getPath(path)+ "/"+data, config)
+  .then((response) => response.data);
 };

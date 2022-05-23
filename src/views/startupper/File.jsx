@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
-import Files from "services/file.service.jsx";
+import Files from "services/file.service.js";
 
 // METHOD DELETE UPDATE MA YEKHDMOUCH 
 // DROP FILE FIL HTML CSS

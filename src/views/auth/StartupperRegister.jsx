@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react/cjs/react.development";
-import Teams from "../../services/teams.service.jsx";
+import Teams from "../../services/teams.service.js";
 import {registerStartuper} from '../../redux/actions/auth'
 import { useDispatch } from "react-redux";
 import { useHistory, Redirect} from "react-router-dom";

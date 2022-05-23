@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import PropTypes from "prop-types";
-import Startups from "services/startup.service.jsx";
+import Startups from "services/startup.service.js";
 
 // METHOD DELETE UPDATE MA YEKHDMOUCH
 
@@ -11,12 +11,13 @@ const Startup = ({ color }, startupID) => {
   var StartupData = {
     name: name,
   };
-  const [startups, setStartup] = useState([]);
+  const [liststartups, setStartup] = useState([]);
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     Startups.getStartups()
       .then((res) => {
-        console.log("getStartups", res.data);
+        console.log("getStartups x", res.data);
         setStartup(res.data);
       })
       .catch((err) => {
@@ -126,18 +127,18 @@ const Startup = ({ color }, startupID) => {
                 </th>
               </tr>
             </thead>
-            {/*   <tbody>
-              {startups.map((startup) => (
-                <tr key={startup.id}>
+               <tbody>
+              {liststartups.length > 0 && liststartups.map((item) => (
+                <tr key={item?.id}>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {startup.name}
+                    {item?.name}
                   </td>
 
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteStartup(startup.id)}
+                      onClick={deleteStartup(item?.id)}
                     >
                       Delete
                     </button>
@@ -145,14 +146,14 @@ const Startup = ({ color }, startupID) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateStartup(startup.firstName)}
+                      onClick={updateStartup(item?.firstName)}
                     >
                       Update
                     </button>
                   </td>
                 </tr>
               ))}
-            </tbody> */}
+            </tbody>
           </table>
         </div>
       </div>

@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 
 import axios from "axios";
 import PropTypes from "prop-types";
-import Startuppers from "services/startupper.service.jsx";
+import Startuppers from "services/startupper.service.js";
 const Startupper = ({ color }, startupperID) => {
   const [name, setName] = useState("");
   var StartupperData = {
