@@ -7,11 +7,51 @@ import Teams from "services/teams.service.js";
 
 const Team = ({ color }) => {
   const [field, setField] = useState("");
+  const [newField, setNewField] = useState("");
+
+  const [isUpdating, setisUpdating] = useState(false);
+  const [updatedTeam, setupdatedTeam] = useState();
+
+  const [loading, setLoading] = useState(false);
   var TeamData = {
     field: field,
   };
   const [teams, setTeam] = useState([]);
+
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    getTeams();
+  }, []);
+
+  useEffect(() => {
+    setupdatedTeam({ ...updatedTeam, field: newField });
+  }, [newField]);
+
+  const getTeams = () => {
+    // console.log("addStartup" + getStartups.JSON);
+    setLoading(true);
+    Teams.getTeams()
+      .then((res) => {
+        console.log("addStartupres" + res);
+        console.log("getStartups c", res.data);
+        setTeam(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const updateProcess = (id) => {
+    console.log("updating process", id);
+    setisUpdating(true);
+    var item = teams.find((o) => o.id == id);
+    setupdatedTeam(item);
+    //updateStartup(id,{...item, name: Newname})
+  };
+  /*   useEffect(() => {
     // const user = JSON.parse(localStorage.getItem("user"));
     Teams.getTeams()
       .then((res) => {
@@ -22,7 +62,7 @@ const Team = ({ color }) => {
         console.log(err);
       });
   }, []);
-
+ */
   const addTeam = () => {
     console.log("addTeam");
     Teams.createTeam(TeamData)
@@ -35,10 +75,15 @@ const Team = ({ color }) => {
   };
 
   const updateTeam = (id, TeamData) => {
+    let data = {
+      field: TeamData?.field,
+    };
     console.log("updateTeam");
-    Teams.updateTeam(id, TeamData)
+    Teams.updateTeam(id, data)
       .then((res) => {
-        console.log(res.data.report);
+        console.log(res?.data);
+        getTeams();
+        setisUpdating(false);
       })
       .catch((err) => {
         console.log(err);
@@ -88,14 +133,26 @@ const Team = ({ color }) => {
                   >
                     Team Field
                   </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setField(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setField(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewField(e.target.value);
+                      }}
+                      value={updatedTeam?.name}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -179,7 +236,10 @@ const Team = ({ color }) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteTeam(team.id)}
+                      //onClick={deleteStartup(item?.id)}
+                      onClick={(e) => {
+                        deleteTeam(team?.id);
+                      }}
                     >
                       Delete
                     </button>
@@ -187,7 +247,10 @@ const Team = ({ color }) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateTeam(team.id)}
+                      // onClick={updateProcess()}
+                      onClick={(e) => {
+                        updateTeam(team?.id);
+                      }}
                     >
                       Update
                     </button>
