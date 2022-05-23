@@ -6,19 +6,29 @@ import Members from "services/member.service.js";
 import { isConstructorDeclaration } from "typescript";
 // components
 
-// METHOD DELETE UPDATE MA YEKHDMOUCH 
-/// POST MA TEKHDEMECH KHATER  TEAMS LEZEM DROPDOWN LIST 
+// METHOD DELETE UPDATE MA YEKHDMOUCH
+/// POST MA TEKHDEMECH KHATER  TEAMS LEZEM DROPDOWN LIST
 
 const Member = ({ color }) => {
+  //////// FOR CREATE
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [poste, setPost] = useState("");
   const [teamId, setTeamId] = useState("");
+  //////// FOR UPDATE
+  const [newFirstName, setNewFirstName] = useState("");
+  const [newLastName, setNewLastName] = useState("");
+  const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPoste, setNewPost] = useState("");
 
   const [teams, setTeams] = useState([]);
   const [members, setMember] = useState([]);
+
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updatedMember, setUpdatedMember] = useState();
 
   var MemberData = {
     firstName: firstName,
@@ -31,6 +41,28 @@ const Member = ({ color }) => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
+    getMembers();
+  }, []);
+
+  useEffect(() => {
+    setUpdatedMember({
+      ...updatedMember,
+      firstName: setNewFirstName,
+      lastName: setNewLastName,
+      phoneNumber: setNewPhoneNumber,
+      email: setNewEmail,
+      poste: setNewPost,
+    });
+  }, [
+    newFirstName,
+    setNewLastName,
+    newLastName,
+    newPhoneNumber,
+    newEmail,
+    newPoste,
+  ]);
+
+  const getMembers = () => {
     Members.getMembers()
       .then((res) => {
         console.log("getMembers", res.data);
@@ -39,12 +71,12 @@ const Member = ({ color }) => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  };
 
-  const addMember = (MemberData) => {
-    console.log("addMember");
+  const addMember = () => {
     Members.createMember(MemberData)
       .then((res) => {
+        console.log("res555" + res);
         console.log(res.data.report);
       })
       .catch((err) => {
@@ -52,11 +84,24 @@ const Member = ({ color }) => {
       });
   };
 
+  const updateProcess = (id) => {
+    console.log("updating process", id);
+    setIsUpdating(true);
+    var item = members.find((o) => o.id == id);
+    setUpdatedMember(item);
+    //updateStartup(id,{...item, name: Newname})
+  };
+
   const updateMember = (id, MemberData) => {
-    console.log("updateMember");
-    Members.updateMember(id, MemberData)
+    let data = {
+      name: MemberData?.name,
+    };
+    console.log("updateStartup", id, data);
+    Members.updateMember(data, id)
       .then((res) => {
-        console.log(res.data.report);
+        console.log(res?.data);
+        getMembers();
+        setIsUpdating(false);
       })
       .catch((err) => {
         console.log(err);
@@ -97,11 +142,12 @@ const Member = ({ color }) => {
   }, []);
 
   const handleChange = (event) => {
-    console.log('select team');
-    console.log(event.target.value);
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    MemberData.teamId = event.target.value;
   };
 
-  console.log('items',teams);
+  console.log("items", teams);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -123,32 +169,56 @@ const Member = ({ color }) => {
                   >
                     First Name
                   </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setFirstName(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setFirstName(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewFirstName(e.target.value);
+                      }}
+                      value={updatedMember?.name}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
+                <label
+                  className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  htmlFor="grid-password"
+                >
+                  Last Name
+                </label>
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setLastName(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setLastName(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewLastName(e.target.value);
+                      }}
+                      value={updatedMember?.name}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
@@ -159,14 +229,26 @@ const Member = ({ color }) => {
                   >
                     Phone Number
                   </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setPhoneNumber(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setPhoneNumber(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewPhoneNumber(e.target.value);
+                      }}
+                      value={updatedMember?.name}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
@@ -177,14 +259,26 @@ const Member = ({ color }) => {
                   >
                     Email
                   </label>
-                  <input
-                    type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewEmail(e.target.value);
+                      }}
+                      value={updatedMember?.name}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
@@ -195,14 +289,26 @@ const Member = ({ color }) => {
                   >
                     Poste
                   </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setPost(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setPost(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewPost(e.target.value);
+                      }}
+                      value={updatedMember?.name}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
@@ -222,7 +328,7 @@ const Member = ({ color }) => {
                     }
                     onChange={handleChange}
                   >
-                    {teams.map((team) => (
+                    {(teams || []).map((team) => (
                       <option value={team?.id}>{team?.field}</option>
                     ))}
                   </select>
@@ -232,13 +338,25 @@ const Member = ({ color }) => {
 
             <hr className="mt-6 border-b-1 border-blueGray-300" />
 
-            <button
-              className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={addMember}
-            >
-              Sumbit
-            </button>
+            {!isUpdating ? (
+              <button
+                className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={addMember}
+              >
+                Sumbit
+              </button>
+            ) : (
+              <button
+                className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={(e) => {
+                  updateMember(updateMember?.id, updateMember);
+                }}
+              >
+                Update
+              </button>
+            )}
           </form>
         </div>
       </div>
@@ -358,7 +476,7 @@ const Member = ({ color }) => {
               </tr>
             </thead>
             <tbody>
-              {members.map((member) => (
+              {(members || []).map((member) => (
                 <tr key={member.id}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <img
@@ -399,7 +517,10 @@ const Member = ({ color }) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteMember(member.firstName)}
+                      //onClick={deleteStartup(item?.id)}
+                      onClick={(e) => {
+                        deleteMember(member?.id);
+                      }}
                     >
                       Delete
                     </button>
@@ -407,7 +528,10 @@ const Member = ({ color }) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateMember(member.firstName)}
+                      // onClick={updateProcess()}
+                      onClick={(e) => {
+                        updateProcess(member?.id);
+                      }}
                     >
                       Update
                     </button>

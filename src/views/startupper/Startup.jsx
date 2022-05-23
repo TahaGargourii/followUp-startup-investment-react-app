@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
 
-// METHOD DELETE UPDATE MA YEKHDMOUCH 
-
+// METHOD DELETE UPDATE MA YEKHDMOUCH
 
 import PropTypes from "prop-types";
 import Startups from "services/startup.service.js";
-import { updatePropertyAccessChain } from "typescript";
-const Startup = ({ color }, startupID) => {
+
+const Startup = ({ color }) => {
   const [name, setName] = useState("");
   const [Newname, setNewName] = useState("");
 
   const [isUpdating, setisUpdating] = useState(false);
   const [updatedStarup, setupdatedStarup] = useState();
 
-  
+  const [loading, setLoading] = useState(false);
   var StartupData = {
     name: name,
   };
@@ -21,31 +20,36 @@ const Startup = ({ color }, startupID) => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     getStartups();
-  }, []);
+  }, [startups]);
 
   useEffect(() => {
-    setupdatedStarup({...updatedStarup, name:Newname})
+    setupdatedStarup({ ...updatedStarup, name: Newname });
   }, [Newname]);
 
   const getStartups = () => {
-    console.log("addStartup");
+    console.log("addStartup" + getStartups.JSON);
+    setLoading(true);
     Startups.getStartups()
       .then((res) => {
+        console.log("addStartupres" + res);
         console.log("getStartups c", res.data);
         setStartup(res.data);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   const updateProcess = (id) => {
-    console.log('updating process',id)
+    console.log("updating process", id);
     setisUpdating(true);
-    var item = startups.find(o => o.id == id);
+    var item = startups.find((o) => o.id == id);
     setupdatedStarup(item);
     //updateStartup(id,{...item, name: Newname})
-  }
+  };
 
   const addStartup = () => {
     console.log("addStartup");
@@ -61,10 +65,10 @@ const Startup = ({ color }, startupID) => {
 
   const updateStartup = (id, StartupData) => {
     let data = {
-      name: StartupData?.name
-    }
-    console.log("updateStartup",id, data);
-    Startups.updateStartup(data,id)
+      name: StartupData?.name,
+    };
+    console.log("updateStartup", id, data);
+    Startups.updateStartup(data, id)
       .then((res) => {
         console.log(res?.data);
         getStartups();
@@ -119,51 +123,51 @@ const Startup = ({ color }, startupID) => {
                   >
                     Startup Name
                   </label>
-                  {!isUpdating ? 
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
                         setName(e.target.value);
-                    }}
-                  /> : 
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
                         setNewName(e.target.value);
-                    }}
-                    value={updatedStarup?.name}
-                  />
-                  }
+                      }}
+                      value={updatedStarup?.name}
+                    />
+                  )}
                 </div>
               </div>
             </div>
 
             <hr className="mt-6 border-b-1 border-blueGray-300" />
 
-          {
-            !isUpdating ?  
+            {!isUpdating ? (
               <button
-                  className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-                  type="button"
-                  onClick={addStartup}
-                >
-                  Sumbit
-              </button> 
-          : 
-            <button
-              className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={(e) => {
-                updateStartup(updatedStarup?.id,updatedStarup);
-              }}
-            >
-              Update
-            </button>
-          }
+                className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={addStartup}
+              >
+                Sumbit
+              </button>
+            ) : (
+              <button
+                className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={(e) => {
+                  updateStartup(updatedStarup?.id, updatedStarup);
+                }}
+              >
+                Update
+              </button>
+            )}
           </form>
         </div>
       </div>
@@ -190,7 +194,6 @@ const Startup = ({ color }, startupID) => {
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
               //onClick={deleteAllStartups}
-              
             >
               Delete All
             </button>
@@ -225,11 +228,13 @@ const Startup = ({ color }, startupID) => {
               </tr>
             </thead>
             <tbody>
-              {startups.map((item) => (
-                <tr key={item?.id}>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {item?.name}
-                  </td>
+              {(startups || [] || []).map((item) => (
+                <tr key={item.id}>
+                  <th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item.name}
+                    </td>
+                  </th>
 
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
@@ -249,13 +254,47 @@ const Startup = ({ color }, startupID) => {
                       // onClick={updateProcess()}
                       onClick={(e) => {
                         updateProcess(item?.id);
-                      }}>
+                      }}
+                    >
                       Update
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
+            {/*       <tbody>
+              {startups.map((startup) => (
+                <tr key={startup?.id}>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {startup?.name}
+                  </td>
+
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    <button
+                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                      type="button"
+                      //onClick={deleteStartup(item?.id)}
+                      onClick={(e) => {
+                        deleteStartup(startup?.id);
+                      }}
+                    >
+                      Delete
+                    </button>
+
+                    <button
+                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                      type="button"
+                      // onClick={updateProcess()}
+                      onClick={(e) => {
+                        updateProcess(startup?.id);
+                      }}
+                    >
+                      Update
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody> */}
           </table>
         </div>
       </div>

@@ -1,19 +1,31 @@
 import React, { useState, useEffect } from "react";
 
+import axios from "axios";
 import PropTypes from "prop-types";
 import Fonds from "../../services/fond.service";
-
-// POST FOND BIL LIST INVESTOR W  LIST STARTUPP ILY AANDOU STARTUPPER 
+import Startups from "services/startup.service.js";
+import Investor from "services/investor.service"; // POST FOND BIL LIST INVESTOR W  LIST STARTUPP ILY AANDOU STARTUPPER
 /// DELETE W UPDATE FOND LEEEEE
 const Fond = ({ color }, fondID) => {
-  const [name, setName] = useState("");
+  const [amount, setAmount] = useState("");
+  const [type, setType] = useState("");
+  const [capTable, setCapTable] = useState("");
+  const [startupId, setStartupId] = useState("");
+  const [investorId, setInvestorId] = useState("");
+  const [investors, setInvestor] = useState([]);
+  const [choosetInvestorId, setchoosetInvestorId] = useState([]);
   var FondData = {
-    name: name,
+    amount: amount,
+    type: type,
+    capTable: capTable,
+    startupId: startupId,
+    investorId: investorId,
   };
   const [fonds, setFond] = useState([]);
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    Fonds.getFonds()
+  const [startups, setStartup] = useState([]);
+  const getAllFondsByStartup = (choosetInvestorId) => {
+    console.log(choosetInvestorId);
+    Fonds.getAllFondsByStartup(choosetInvestorId)
       .then((res) => {
         console.log("getFonds", res.data);
         setFond(res.data);
@@ -21,11 +33,33 @@ const Fond = ({ color }, fondID) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    Startups.getStartups()
+      .then((res) => {
+        console.log("getStartups", res.data);
+        setStartup(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
-  const addFond = () => {
-    console.log("addFond");
+  const addFond1 = () => {
+    /*  console.log("addFond");
+    console.log("addFond11" + FondData);
     Fonds.createFond(FondData)
+      .then((res) => {
+        console.log(res.data.report);
+      })
+      .catch((err) => {
+        console.log(err);
+      }); */
+    console.log(FondData);
+    axios
+      .post("http://localhost:8080/api/fonds", FondData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -34,6 +68,17 @@ const Fond = ({ color }, fondID) => {
       });
   };
 
+  const addFond = () => {
+    console.log("addStartup");
+    Fonds.createFond(FondData)
+      .then((res) => {
+        console.log(res.data.report);
+        //   getAllFonds();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const updateFond = (id, FondData) => {
     console.log("updateFond");
     Fonds.updateFond(id, FondData)
@@ -66,6 +111,38 @@ const Fond = ({ color }, fondID) => {
         console.log(err);
       });
   };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    Investor.getInvestors()
+      .then((res) => {
+        console.log("getStartups", res.data);
+        setInvestor(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const handleChangeInvestor = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    FondData.investorId = event.target.value;
+  };
+
+  const handleChangeStartup = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    FondData.startupId = event.target.value;
+  };
+
+  const handleChooseStartup = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    setchoosetInvestorId(event.target.value);
+    getAllFondsByStartup(event.target.value);
+  };
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -85,14 +162,89 @@ const Fond = ({ color }, fondID) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Fond Name
+                    Startup
+                  </label>
+
+                  <select
+                    name="cars"
+                    id="cars"
+                    className={
+                      "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    }
+                    onChange={handleChangeStartup}
+                  >
+                    {(startups || []).map((startup) => (
+                      <option value={startup?.id}>{startup?.name}</option>
+                    ))}
+                  </select>
+
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Investor
+                  </label>
+
+                  <select
+                    name="cars"
+                    id="cars"
+                    className={
+                      "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    }
+                    onChange={handleChangeInvestor}
+                  >
+                    {(investors || []).map((investor) => (
+                      <option value={investor?.id}>
+                        {investor?.user.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Amount
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setName(e.target.value);
+                      setAmount(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Type
+                  </label>
+                  <input
+                    type="text"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    required
+                    onChange={(e) => {
+                      setType(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Cap Table
+                  </label>
+                  <input
+                    type="text"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    required
+                    onChange={(e) => {
+                      setCapTable(e.target.value);
                     }}
                   />
                 </div>
@@ -130,13 +282,18 @@ const Fond = ({ color }, fondID) => {
               </h3>
             </div>
 
-            <button
-              className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={deleteAllFonds}
+            <select
+              name="cars"
+              id="cars"
+              className={
+                "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              }
+              onChange={handleChooseStartup}
             >
-              Delete All
-            </button>
+              {(startups || []).map((startup) => (
+                <option value={startup?.id}>{startup?.name}</option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="block w-full overflow-x-auto">
@@ -167,33 +324,15 @@ const Fond = ({ color }, fondID) => {
                 </th>
               </tr>
             </thead>
-            {/*   <tbody>
-              {fonds.map((fond) => (
+            <tbody>
+              {(fonds || []).map((fond) => (
                 <tr key={fond.id}>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     {fond.name}
                   </td>
-
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    <button
-                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={deleteFond(fond.id)}
-                    >
-                      Delete
-                    </button>
-
-                    <button
-                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-                      type="button"
-                      onClick={updateFond(fond.firstName)}
-                    >
-                      Update
-                    </button>
-                  </td>
                 </tr>
               ))}
-            </tbody> */}
+            </tbody>
           </table>
         </div>
       </div>

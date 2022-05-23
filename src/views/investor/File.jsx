@@ -3,8 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-
-// METHOD DELETE UPDATE MA YEKHDMOUCH 
+// METHOD DELETE UPDATE MA YEKHDMOUCH
 // DROP FILE FIL HTML CSS
 
 const Files = ({ color }) => {
@@ -194,7 +193,7 @@ const Files = ({ color }) => {
               </tr>
             </thead>
             <tbody>
-              {files.map((file) => (
+              {(files || []).map((file) => (
                 <tr key={file.id}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <img

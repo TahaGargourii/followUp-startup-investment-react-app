@@ -3,16 +3,16 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Teams from "services/teams.service.js";
 
-// METHOD DELETE UPDATE MA YEKHDMOUCH 
+// METHOD DELETE UPDATE MA YEKHDMOUCH
 
 const Team = ({ color }) => {
-  const [name, setName] = useState("");
+  const [filed, setField] = useState("");
   var TeamData = {
-    name: name,
+    filed: filed,
   };
   const [teams, setTeam] = useState([]);
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    // const user = JSON.parse(localStorage.getItem("user"));
     Teams.getTeams()
       .then((res) => {
         console.log("getTeams", res.data);
@@ -25,7 +25,7 @@ const Team = ({ color }) => {
 
   const addTeam = () => {
     console.log("addTeam");
-    Teams.addTeam(TeamData)
+    Teams.createTeam(TeamData)
       .then((res) => {
         console.log(res.data.report);
       })
@@ -86,14 +86,14 @@ const Team = ({ color }) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Team Name
+                    Team Field
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setName(e.target.value);
+                      setField(e.target.value);
                     }}
                   />
                 </div>
@@ -153,7 +153,7 @@ const Team = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Team Name
+                  Team Field
                 </th>
 
                 <th
@@ -169,10 +169,10 @@ const Team = ({ color }) => {
               </tr>
             </thead>
             <tbody>
-              {teams.map((team) => (
+              {(teams || []).map((team) => (
                 <tr key={team.id}>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {team.name}
+                    {team.field}
                   </td>
 
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">

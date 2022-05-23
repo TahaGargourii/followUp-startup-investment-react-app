@@ -3,9 +3,8 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Files from "services/file.service.js";
 
-// METHOD DELETE UPDATE MA YEKHDMOUCH 
+// METHOD DELETE UPDATE MA YEKHDMOUCH
 // DROP FILE FIL HTML CSS
-
 
 const File = ({ color }, fileID) => {
   const [name, setName] = useState("");
@@ -70,11 +69,12 @@ const File = ({ color }, fileID) => {
   };
   return (
     <>
+      <h1> hello</h1>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
         <div className="rounded-t bg-white mb-0 px-6 py-6">
           <div className="text-center flex justify-between">
             <h6 className="text-blueGray-700 text-xl font-bold">
-              File Information
+              Fond Information
             </h6>
           </div>
         </div>
@@ -87,7 +87,55 @@ const File = ({ color }, fileID) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    File Name
+                    Startup
+                  </label>
+
+                  <select
+                    name="cars"
+                    id="cars"
+                    className={
+                      "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    }
+                  ></select>
+                </div>
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Amount
+                  </label>
+                  <input
+                    type="text"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    required
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Type
+                  </label>
+                  <input
+                    type="text"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    required
+                    onChange={(e) => {
+                      setName(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Cap Table
                   </label>
                   <input
                     type="text"
@@ -106,7 +154,6 @@ const File = ({ color }, fileID) => {
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={addFile}
             >
               Sumbit
             </button>
@@ -128,14 +175,13 @@ const File = ({ color }, fileID) => {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Files
+                Fonds
               </h3>
             </div>
 
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
-              onClick={deleteAllFiles}
             >
               Delete All
             </button>
@@ -154,7 +200,7 @@ const File = ({ color }, fileID) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  File Name
+                  Fond Name
                 </th>
 
                 <th
@@ -170,17 +216,17 @@ const File = ({ color }, fileID) => {
               </tr>
             </thead>
             {/*   <tbody>
-              {files.map((file) => (
-                <tr key={file.id}>
+              {fonds.map((fond) => (
+                <tr key={fond.id}>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {file.name}
+                    {fond.name}
                   </td>
 
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteFile(file.id)}
+                      onClick={deleteFond(fond.id)}
                     >
                       Delete
                     </button>
@@ -188,7 +234,7 @@ const File = ({ color }, fileID) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateFile(file.firstName)}
+                      onClick={updateFond(fond.firstName)}
                     >
                       Update
                     </button>

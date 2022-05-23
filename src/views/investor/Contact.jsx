@@ -4,7 +4,7 @@ import axios from "axios";
 import PropTypes from "prop-types";
 
 // components
-// METHOD DELETE UPDATE MA YEKHDMOUCH 
+// METHOD DELETE UPDATE MA YEKHDMOUCH
 
 import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
@@ -282,7 +282,7 @@ const Contacts = ({ color }) => {
               </tr>
             </thead>
             <tbody>
-              {contacts.map((contact) => (
+              {(contacts || []).map((contact) => (
                 <tr key={contact.id}>
                   <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
                     <img

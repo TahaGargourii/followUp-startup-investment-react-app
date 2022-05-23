@@ -29,14 +29,41 @@ export default function Startupper() {
         <HeaderStatsStartupper />
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
-            <Route path="/startupper/dashboard" exact component={requireAuth(Dashboard)} />
-            <Route path="/startupper/contacts" exact component={requireAuth(Contacts)} />
-            <Route path="/startupper/teams" exact component={requireAuth(Teams)} />
-            <Route path="/startupper/members" exact component={requireAuth(Member)} />
+            <Route
+              path="/startupper/dashboard"
+              exact
+              component={requireAuth(Dashboard)}
+            />
+            <Route
+              path="/startupper/contacts"
+              exact
+              component={requireAuth(Contacts)}
+            />
+            <Route
+              path="/startupper/teams"
+              exact
+              component={requireAuth(Teams)}
+            />
+            <Route
+              path="/startupper/members"
+              exact
+              component={requireAuth(Member)}
+            />
             <Redirect from="/admin" to="/admin/dashboard" />
-            <Route from="/startupper/startup" component={requireAuth(Startup)} />
-            <Route path="/startupper/files" exact component={requireAuth(File)} />
-            <Route path="/startupper/investors" exact component={requireAuth(Investors)} />
+            <Route
+              from="/startupper/startup"
+              component={requireAuth(Startup)}
+            />
+            <Route
+              path="/startupper/files"
+              exact
+              component={requireAuth(File)}
+            />
+            <Route
+              path="/startupper/investors"
+              exact
+              component={requireAuth(Investors)}
+            />
             <Route from="/startupper/fond" component={requireAuth(Fond)} />
 
             {/*  <Route path="/startupper/AddStartup" exact component={Addstartup} /> */}

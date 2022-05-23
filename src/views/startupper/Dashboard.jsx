@@ -1,9 +1,8 @@
 import React from "react";
 
-// NE9ESS DES CARD 
-// CARD TOTAL FUNDS W CARD TOTAL REVENUE 
-// PIE CHART REPATITION MTAA LFUNDS KIMA F DESIGN 
-
+// NE9ESS DES CARD
+// CARD TOTAL FUNDS W CARD TOTAL REVENUE
+// PIE CHART REPATITION MTAA LFUNDS KIMA F DESIGN
 
 import CardLineChart from "components/Cards/CardLineChart.js";
 import CardBarChart from "components/Cards/CardBarChart.js";
@@ -24,7 +23,7 @@ export default function Dashboard() {
       </div>
       <div className="flex flex-wrap mt-4">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <Tablestartup/>
+          <Tablestartup />
         </div>
 
         <div className="ff">
@@ -32,7 +31,6 @@ export default function Dashboard() {
             <h1> Team</h1>
           </Paper> */}
         </div>
-        
       </div>
     </>
   );
