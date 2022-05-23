@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import Teams from "services/teams.service.js";
 import Members from "services/member.service.js";
+import { isConstructorDeclaration } from "typescript";
 // components
 
 // METHOD DELETE UPDATE MA YEKHDMOUCH 
@@ -94,6 +95,13 @@ const Member = ({ color }) => {
         console.log(err);
       });
   }, []);
+
+  const handleChange = (event) => {
+    console.log('select team');
+    console.log(event.target.value);
+  };
+
+  console.log('items',teams);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -212,9 +220,10 @@ const Member = ({ color }) => {
                     className={
                       "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     }
+                    onChange={handleChange}
                   >
                     {teams.map((team) => (
-                      <option>{team.name}</option>
+                      <option value={team?.id}>{team?.field}</option>
                     ))}
                   </select>
                 </div>
