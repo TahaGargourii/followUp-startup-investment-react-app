@@ -25,6 +25,7 @@ const Contact = ({ color }) => {
 
   const [isUpdating, setIsUpdating] = useState(false);
   const [updatedContact, setUpdatedContact] = useState();
+  const [updatedContactitem, setUpdatedContactitem] = useState();
 
   var ContactData = {
     firstName: firstName,
@@ -39,24 +40,53 @@ const Contact = ({ color }) => {
     getContacts();
   }, []);
 
+  
+
   useEffect(() => {
     setUpdatedContact({
       ...updatedContact,
       firstName: newFirstName,
-      lastName: newLastName,
+    });
+  }, [
+    newFirstName
+  ]);
+
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
+      lastName: newLastName
+    });
+  }, [
+    newLastName,
+  ]);
+
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
       phoneNumber: newPhoneNumber,
+    });
+  }, [
+    newPhoneNumber
+  ]);
+  
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
       email: newEmail,
+    });
+  }, [
+    newEmail
+  ]);
+
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
       poste: newPoste,
     });
   }, [
-    newFirstName,
-    newLastName,
-    newLastName,
-    newPhoneNumber,
-    newEmail,
     newPoste,
   ]);
-
+  
   const getContacts = () => {
     Contacts.getContacts()
       .then((res) => {
@@ -73,6 +103,7 @@ const Contact = ({ color }) => {
       .then((res) => {
         console.log("res555" + res);
         console.log(res.data.report);
+        getContacts();
       })
       .catch((err) => {
         console.log(err);
@@ -84,12 +115,19 @@ const Contact = ({ color }) => {
     setIsUpdating(true);
     var item = contacts.find((o) => o.id == id);
     setUpdatedContact(item);
+    setUpdatedContactitem(item);
     //updateStartup(id,{...item, name: Newname})
   };
 
   const updateContact = (id, ContactData) => {
     let data = {
-      name: ContactData?.name,
+      name: updatedContact?.name,
+      firstName: updatedContact.firstName,
+      lastName: updatedContact.lastName,
+      phoneNumber: updatedContact.phoneNumber,
+      email: updatedContact.email,
+      poste: updatedContact.poste,
+      startupper_id: updatedContactitem?.startupper?.id
     };
     console.log("updateStartup", id, data);
     Contacts.updateContact(data, id)
@@ -119,6 +157,7 @@ const Contact = ({ color }) => {
     Contacts.deleteContact(id)
       .then((res) => {
         console.log(res.data.report);
+        getContacts();
       })
       .catch((err) => {
         console.log(err);
@@ -130,7 +169,7 @@ const Contact = ({ color }) => {
     console.log("select team" + event.target.value);
     ContactData.teamId = event.target.value;
   }; */
-
+  console.log("updatedContact",updatedContact,isUpdating);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -152,7 +191,7 @@ const Contact = ({ color }) => {
                   >
                     First Name
                   </label>
-                  {!isUpdating ? (
+                  {!isUpdating ?
                     <input
                       type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -161,7 +200,7 @@ const Contact = ({ color }) => {
                         setFirstName(e.target.value);
                       }}
                     />
-                  ) : (
+                  : 
                     <input
                       type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
@@ -169,9 +208,9 @@ const Contact = ({ color }) => {
                       onChange={(e) => {
                         setNewFirstName(e.target.value);
                       }}
-                      value={updatedContact?.name}
+                      value={updatedContact?.firstName}
                     />
-                  )}
+                  }
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
@@ -196,10 +235,10 @@ const Contact = ({ color }) => {
                       type="text"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       required
+                      value={updatedContact?.lastName}
                       onChange={(e) => {
                         setNewLastName(e.target.value);
                       }}
-                      value={updatedContact?.name}
                     />
                   )}
                 </div>
@@ -229,7 +268,7 @@ const Contact = ({ color }) => {
                       onChange={(e) => {
                         setNewPhoneNumber(e.target.value);
                       }}
-                      value={updatedContact?.name}
+                      value={updatedContact?.phoneNumber}
                     />
                   )}
                 </div>
@@ -259,7 +298,7 @@ const Contact = ({ color }) => {
                       onChange={(e) => {
                         setNewEmail(e.target.value);
                       }}
-                      value={updatedContact?.name}
+                      value={updatedContact?.email}
                     />
                   )}
                 </div>
@@ -289,7 +328,7 @@ const Contact = ({ color }) => {
                       onChange={(e) => {
                         setNewPost(e.target.value);
                       }}
-                      value={updatedContact?.name}
+                      value={updatedContact?.poste}
                     />
                   )}
                 </div>
@@ -311,7 +350,7 @@ const Contact = ({ color }) => {
                 className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                 type="button"
                 onClick={(e) => {
-                  updateContact(updateContact?.id, updateContact);
+                  updateContact(updatedContact?.id, updatedContact);
                 }}
               >
                 Update

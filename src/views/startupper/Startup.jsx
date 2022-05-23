@@ -20,7 +20,7 @@ const Startup = ({ color }) => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     getStartups();
-  }, [startups]);
+  }, []);
 
   useEffect(() => {
     setupdatedStarup({ ...updatedStarup, name: Newname });
