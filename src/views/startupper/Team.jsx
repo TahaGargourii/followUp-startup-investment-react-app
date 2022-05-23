@@ -6,9 +6,9 @@ import Teams from "services/teams.service.js";
 // METHOD DELETE UPDATE MA YEKHDMOUCH
 
 const Team = ({ color }) => {
-  const [filed, setField] = useState("");
+  const [field, setField] = useState("");
   var TeamData = {
-    filed: filed,
+    field: field,
   };
   const [teams, setTeam] = useState([]);
   useEffect(() => {
