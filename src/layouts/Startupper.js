@@ -18,6 +18,8 @@ import Investors from "views/startupper/Investor.jsx";
 import Startup from "views/startupper/Startup.jsx";
 import File from "views/startupper/File.jsx";
 import Fond from "views/startupper/Fond";
+import Cac from "views/startupper/Cac";
+import Revenue from "views/startupper/Revenue";
 
 export default function Startupper() {
   return (
@@ -53,6 +55,11 @@ export default function Startupper() {
             <Route
               from="/startupper/startup"
               component={requireAuth(Startup)}
+            />
+            <Route from="/startupper/Cac" component={requireAuth(Cac)} />
+            <Route
+              from="/startupper/revenue"
+              component={requireAuth(Revenue)}
             />
             <Route
               path="/startupper/files"

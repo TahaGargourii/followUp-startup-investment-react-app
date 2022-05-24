@@ -130,6 +130,52 @@ export default function StartupperSidebar() {
                   Startups
                 </Link>
               </li>
+
+              <li className="items-center">
+                <Link
+                  className={
+                    "text-xs uppercase py-3 font-bold block " +
+                    (window.location.href.indexOf("/startupper/CAC") !== -1
+                      ? "text-lightBlue-500 hover:text-lightBlue-600"
+                      : "text-blueGray-700 hover:text-blueGray-500")
+                  }
+                  to="/startupper/CAC"
+                >
+                  <i
+                    className={
+                      "fas mr-2 text-sm " +
+                      (window.location.href.indexOf("/startupper/CAC") !== -1
+                        ? "opacity-75"
+                        : "text-blueGray-300")
+                    }
+                  ></i>{" "}
+                  CAC
+                </Link>
+              </li>
+
+              <li className="items-center">
+                <Link
+                  className={
+                    "text-xs uppercase py-3 font-bold block " +
+                    (window.location.href.indexOf("/startupper/revenue") !== -1
+                      ? "text-lightBlue-500 hover:text-lightBlue-600"
+                      : "text-blueGray-700 hover:text-blueGray-500")
+                  }
+                  to="/startupper/revenue"
+                >
+                  <i
+                    className={
+                      "fas mr-2 text-sm " +
+                      (window.location.href.indexOf("/startupper/revenue") !==
+                      -1
+                        ? "opacity-75"
+                        : "text-blueGray-300")
+                    }
+                  ></i>{" "}
+                  REVENUE
+                </Link>
+              </li>
+
               <li className="items-center">
                 <Link
                   className={
@@ -143,8 +189,7 @@ export default function StartupperSidebar() {
                   <i
                     className={
                       "fas mr-2 text-sm " +
-                      (window.location.href.indexOf("/startupper/fond") !==
-                      -1
+                      (window.location.href.indexOf("/startupper/fond") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
@@ -227,17 +272,17 @@ export default function StartupperSidebar() {
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="startupper/files"
+                  to="/startupper/files"
                 >
                   <i
                     className={
                       " mr-2 text-sm " +
-                      (window.location.href.indexOf("/startupper/files") !== -1
+                      (window.location.href.indexOf("startupper/files") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  Files
+                  Filess
                 </Link>
               </li>
 

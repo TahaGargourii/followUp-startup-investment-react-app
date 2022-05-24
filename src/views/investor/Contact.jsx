@@ -1,35 +1,128 @@
 import React, { useState, useEffect } from "react";
 
-import axios from "axios";
 import PropTypes from "prop-types";
 
-// components
+import Contacts from "services/contact.service.js";
+
 // METHOD DELETE UPDATE MA YEKHDMOUCH
+/// POST MA TEKHDEMECH KHATER  TEAMS LEZEM DROPDOWN LIST
 
-import TableDropdown from "components/Dropdowns/TableDropdown.js";
-
-const Contacts = ({ color }) => {
+const Contact = ({ color }) => {
+  //////// FOR CREATE
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [poste, setPost] = useState("");
-  const [teamId, setTeamId] = useState("");
+  //////// FOR UPDATE
+  const [newFirstName, setNewFirstName] = useState("");
+  const [newLastName, setNewLastName] = useState("");
+  const [newPhoneNumber, setNewPhoneNumber] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPoste, setNewPost] = useState("");
+
+  const [contacts, setContact] = useState([]);
+
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [updatedContact, setUpdatedContact] = useState();
+  const [updatedContactitem, setUpdatedContactitem] = useState();
+
   var ContactData = {
     firstName: firstName,
     lastName: lastName,
     phoneNumber: phoneNumber,
     email: email,
     poste: poste,
-    teamId: teamId,
+  };
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    getContacts();
+  }, []);
+
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
+      firstName: newFirstName,
+    });
+  }, [newFirstName]);
+
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
+      lastName: newLastName,
+    });
+  }, [newLastName]);
+
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
+      phoneNumber: newPhoneNumber,
+    });
+  }, [newPhoneNumber]);
+
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
+      email: newEmail,
+    });
+  }, [newEmail]);
+
+  useEffect(() => {
+    setUpdatedContact({
+      ...updatedContact,
+      poste: newPoste,
+    });
+  }, [newPoste]);
+
+  const getContacts = () => {
+    Contacts.getContacts()
+      .then((res) => {
+        console.log("getContacts", res.data);
+        setContact(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const addContact = () => {
-    console.log(ContactData);
-    axios
-      .post("http://localhost:8080/api/contacts", ContactData)
+    Contacts.createContact(ContactData)
       .then((res) => {
+        console.log("res555" + res);
         console.log(res.data.report);
+        getContacts();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const updateProcess = (id) => {
+    console.log("updating process", id);
+    setIsUpdating(true);
+    var item = contacts.find((o) => o.id == id);
+    setUpdatedContact(item);
+    setUpdatedContactitem(item);
+    //updateStartup(id,{...item, name: Newname})
+  };
+
+  const updateContact = (id, ContactData) => {
+    let data = {
+      name: updatedContact?.name,
+      firstName: updatedContact.firstName,
+      lastName: updatedContact.lastName,
+      phoneNumber: updatedContact.phoneNumber,
+      email: updatedContact.email,
+      poste: updatedContact.poste,
+      startupper_id: updatedContactitem?.startupper?.id,
+    };
+    console.log("updateStartup", id, data);
+    Contacts.updateContact(data, id)
+      .then((res) => {
+        console.log(res?.data);
+        getContacts();
+        setIsUpdating(false);
       })
       .catch((err) => {
         console.log(err);
@@ -37,9 +130,8 @@ const Contacts = ({ color }) => {
   };
 
   const deleteAllContacts = () => {
-    console.log(ContactData);
-    axios
-      .delete("http://localhost:8080/api/contacts", ContactData)
+    console.log("deleteAllContacts");
+    Contacts.deleteAllContacts()
       .then((res) => {
         console.log(res.data.report);
       })
@@ -49,43 +141,23 @@ const Contacts = ({ color }) => {
   };
 
   const deleteContact = (id) => {
-    axios
-      .delete("http://localhost:8080/api/contacts/" + { id })
+    console.log("deleteContact");
+    Contacts.deleteContact(id)
       .then((res) => {
         console.log(res.data.report);
+        getContacts();
       })
-      .catch((error) => {
-        console.error("There was an error!", error);
+      .catch((err) => {
+        console.log(err);
       });
   };
 
-  const updateContact = (id) => {
-    console.log(ContactData);
-    axios
-      .put("http://localhost:8080/api/contacts/" + id, ContactData)
-      .then((res) => {
-        console.log(res.data.report);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  const [contacts, setContact] = useState([]);
-  /*  const [startups, setStartups] = useState([]);
-  const [investors, setInvestors] = useState([]);
-  const [isFetching, setFetching] = useState(false); */
-  useEffect(() => {
-    axios
-      .get("http://localhost:8080/api/contacts")
-      .then((res) => {
-        console.log("HELLO " + Object.keys(res.data.data).length);
-        console.log("hello " + res.data.data);
-        setContact(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  /*   const handleChange = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    ContactData.teamId = event.target.value;
+  }; */
+  console.log("updatedContact", updatedContact, isUpdating);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -107,32 +179,56 @@ const Contacts = ({ color }) => {
                   >
                     First Name
                   </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setFirstName(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setFirstName(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewFirstName(e.target.value);
+                      }}
+                      value={updatedContact?.firstName}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
+                <label
+                  className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                  htmlFor="grid-password"
+                >
+                  Last Name
+                </label>
                 <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Last Name
-                  </label>
-                  <input
-                    type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setLastName(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setLastName(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      value={updatedContact?.lastName}
+                      onChange={(e) => {
+                        setNewLastName(e.target.value);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
@@ -143,14 +239,26 @@ const Contacts = ({ color }) => {
                   >
                     Phone Number
                   </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setPhoneNumber(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setPhoneNumber(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewPhoneNumber(e.target.value);
+                      }}
+                      value={updatedContact?.phoneNumber}
+                    />
+                  )}
                 </div>
               </div>
               <div className="w-full lg:w-6/12 px-4">
@@ -161,27 +269,81 @@ const Contacts = ({ color }) => {
                   >
                     Email
                   </label>
-                  <input
-                    type="email"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                  />
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewEmail(e.target.value);
+                      }}
+                      value={updatedContact?.email}
+                    />
+                  )}
+                </div>
+              </div>
+              <div className="w-full lg:w-6/12 px-4">
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Poste
+                  </label>
+                  {!isUpdating ? (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setPost(e.target.value);
+                      }}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      required
+                      onChange={(e) => {
+                        setNewPost(e.target.value);
+                      }}
+                      value={updatedContact?.poste}
+                    />
+                  )}
                 </div>
               </div>
             </div>
 
             <hr className="mt-6 border-b-1 border-blueGray-300" />
 
-            <button
-              className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={addContact}
-            >
-              Sumbit
-            </button>
+            {!isUpdating ? (
+              <button
+                className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={addContact}
+              >
+                Sumbit
+              </button>
+            ) : (
+              <button
+                className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+                type="button"
+                onClick={(e) => {
+                  updateContact(updatedContact?.id, updatedContact);
+                }}
+              >
+                Update
+              </button>
+            )}
           </form>
         </div>
       </div>
@@ -268,6 +430,16 @@ const Contacts = ({ color }) => {
                 >
                   Email
                 </th>
+                <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                  }
+                >
+                  Poste
+                </th>
 
                 <th
                   className={
@@ -313,12 +485,18 @@ const Contacts = ({ color }) => {
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     {contact.email}
                   </td>
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                    {contact.poste}
+                  </td>
 
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteContact(contact.id)}
+                      //onClick={deleteStartup(item?.id)}
+                      onClick={(e) => {
+                        deleteContact(contact?.id);
+                      }}
                     >
                       Delete
                     </button>
@@ -326,7 +504,10 @@ const Contacts = ({ color }) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateContact(contact.id)}
+                      // onClick={updateProcess()}
+                      onClick={(e) => {
+                        updateProcess(contact?.id);
+                      }}
                     >
                       Update
                     </button>
@@ -341,12 +522,12 @@ const Contacts = ({ color }) => {
   );
 };
 
-export default Contacts;
+export default Contact;
 
-Contacts.defaultProps = {
+Contact.defaultProps = {
   color: "light",
 };
 
-Contacts.propTypes = {
+Contact.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };

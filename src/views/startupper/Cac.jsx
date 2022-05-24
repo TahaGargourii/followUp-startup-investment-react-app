@@ -1,79 +1,97 @@
 import React, { useState, useEffect } from "react";
 
-import PropTypes from "prop-types";
-import Files from "services/file.service.js";
-
 // METHOD DELETE UPDATE MA YEKHDMOUCH
-// DROP FILE FIL HTML CSS
 
-const File = ({ color }, fileID) => {
-  const [name, setName] = useState("");
-  var FileData = {
-    name: name,
+import PropTypes from "prop-types";
+import Cacs from "services/cac.service.js";
+import Startups from "services/startup.service.js";
+const Cac = ({ color }) => {
+  const [amount, setAmount] = useState("");
+  const [month, setMonth] = useState("");
+  const [startupId, setStartupId] = useState("");
+
+  const [startups, setStartup] = useState([]);
+  const [cacs, setCacs] = useState([]);
+  /*  const [isUpdating, setisUpdating] = useState(false);
+  const [updatedStarup, setupdatedStarup] = useState();
+
+  const [loading, setLoading] = useState(false); */
+  var CacData = {
+    amount: amount,
+    month: month,
+    startupId: startupId,
   };
-  const [files, setFile] = useState([]);
+
+  useEffect(() => {
+    getAllCacsByStartup();
+  }, []);
+  /* 
+  useEffect(() => {
+    setupdatedStarup({ ...updatedStarup, name: Newname });
+  }, [Newname]);
+ */
+  const getAllCacsByStartup = (startupId) => {
+    // console.log("addStartup" + getStartups.JSON);
+    // setLoading(true);
+    Cacs.getAllCacsByStartup(startupId)
+      .then((res) => {
+        console.log("addStartupres" + res);
+        console.log("getStartups c", res.data);
+        setCacs(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        //setLoading(false);
+      });
+  };
+
+  /*   const updateProcess = (id) => {
+    console.log("updating process", id);
+    setisUpdating(true);
+    var item = startups.find((o) => o.id == id);
+    setupdatedStarup(item);
+    //updateStartup(id,{...item, name: Newname})
+  }; */
+
+  const addCac = () => {
+    console.log("addStartup");
+    Cacs.createCac(CacData)
+      .then((res) => {
+        console.log(res.data.report);
+        getAllCacsByStartup();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    Files.getFiles()
+    Startups.getStartups()
       .then((res) => {
-        console.log("getFiles", res.data);
-        setFile(res.data);
+        console.log("getStartups", res.data);
+        setStartup(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-
-  const addFile = () => {
-    console.log("addFile");
-    Files.createFile(FileData)
-      .then((res) => {
-        console.log(res.data.report);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  const handleChangeStartup = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    CacData.startupId = event.target.value;
   };
 
-  const updateFile = (id, FileData) => {
-    console.log("updateFile");
-    Files.updateFile(id, FileData)
-      .then((res) => {
-        console.log(res.data.report);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const deleteAllFiles = () => {
-    console.log("deleteAllFiles");
-    Files.deleteAllFiles()
-      .then((res) => {
-        console.log(res.data.report);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const deleteFile = (id) => {
-    console.log("deleteFile");
-    Files.deleteFile(id)
-      .then((res) => {
-        console.log(res.data.report);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   return (
     <>
-      <h1> hello</h1>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
         <div className="rounded-t bg-white mb-0 px-6 py-6">
           <div className="text-center flex justify-between">
-            <h6 className="text-blueGray-700 text-xl font-bold">Drop File</h6>
+            <h6 className="text-blueGray-700 text-xl font-bold">
+              Startup Information
+            </h6>
           </div>
         </div>
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
@@ -94,7 +112,12 @@ const File = ({ color }, fileID) => {
                     className={
                       "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     }
-                  ></select>
+                    onChange={handleChangeStartup}
+                  >
+                    {(startups || []).map((startup) => (
+                      <option value={startup?.id}>{startup?.name}</option>
+                    ))}
+                  </select>
                 </div>
                 <div className="relative w-full mb-3">
                   <label
@@ -108,7 +131,7 @@ const File = ({ color }, fileID) => {
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setName(e.target.value);
+                      setAmount(e.target.value);
                     }}
                   />
                 </div>
@@ -117,30 +140,14 @@ const File = ({ color }, fileID) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Type
+                    Month
                   </label>
                   <input
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     required
                     onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                  />
-                </div>
-                <div className="relative w-full mb-3">
-                  <label
-                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                    htmlFor="grid-password"
-                  >
-                    Cap Table
-                  </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setName(e.target.value);
+                      setMonth(e.target.value);
                     }}
                   />
                 </div>
@@ -152,6 +159,7 @@ const File = ({ color }, fileID) => {
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
+              onClick={addCac}
             >
               Sumbit
             </button>
@@ -173,13 +181,14 @@ const File = ({ color }, fileID) => {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Fonds
+                Startups
               </h3>
             </div>
 
             <button
               className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
               type="button"
+              //onClick={deleteAllStartups}
             >
               Delete All
             </button>
@@ -198,7 +207,7 @@ const File = ({ color }, fileID) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Fond Name
+                  Startup Name
                 </th>
 
                 <th
@@ -213,18 +222,34 @@ const File = ({ color }, fileID) => {
                 </th>
               </tr>
             </thead>
-            {/*   <tbody>
-              {fonds.map((fond) => (
-                <tr key={fond.id}>
+            <tbody>
+              {(cacs || [] || []).map((item) => (
+                <tr key={item.id}>
+                  <th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item.name}
+                    </td>
+                  </th>
+
+                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
+                </tr>
+              ))}
+            </tbody>
+            {/*       <tbody>
+              {startups.map((startup) => (
+                <tr key={startup?.id}>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {fond.name}
+                    {startup?.name}
                   </td>
 
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={deleteFond(fond.id)}
+                      //onClick={deleteStartup(item?.id)}
+                      onClick={(e) => {
+                        deleteStartup(startup?.id);
+                      }}
                     >
                       Delete
                     </button>
@@ -232,7 +257,10 @@ const File = ({ color }, fileID) => {
                     <button
                       className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={updateFond(fond.firstName)}
+                      // onClick={updateProcess()}
+                      onClick={(e) => {
+                        updateProcess(startup?.id);
+                      }}
                     >
                       Update
                     </button>
@@ -247,12 +275,12 @@ const File = ({ color }, fileID) => {
   );
 };
 
-export default File;
+export default Cac;
 
-File.defaultProps = {
+Cac.defaultProps = {
   color: "light",
 };
 
-File.propTypes = {
+Cac.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };
