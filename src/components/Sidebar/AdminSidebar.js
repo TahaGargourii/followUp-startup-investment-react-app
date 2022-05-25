@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 
-export default function AdminSidebar() {
+export default function InvestorSidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
   return (
     <>
@@ -126,51 +126,7 @@ export default function AdminSidebar() {
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  Portfolio
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link
-                  className={
-                    "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/investor/contacts") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
-                      : "text-blueGray-700 hover:text-blueGray-500")
-                  }
-                  to="/investor/contacts"
-                >
-                  <i
-                    className={
-                      "mr-2 text-sm " +
-                      (window.location.href.indexOf("/investor/contacts") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
-                    }
-                  ></i>{" "}
-                  Contacts
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link
-                  className={
-                    "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/investor/files") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
-                      : "text-blueGray-700 hover:text-blueGray-500")
-                  }
-                  to="/investor/files"
-                >
-                  <i
-                    className={
-                      " mr-2 text-sm " +
-                      (window.location.href.indexOf("/investor/files") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
-                    }
-                  ></i>{" "}
-                  Files
+                  Users
                 </Link>
               </li>
             </ul>

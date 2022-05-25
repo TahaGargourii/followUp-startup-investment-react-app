@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 // METHOD DELETE UPDATE MA YEKHDMOUCH
-
+import Dropdown from "components/Dropdowns/Dropdown";
 import PropTypes from "prop-types";
 import Cacs from "services/cac.service.js";
 import Startups from "services/startup.service.js";
@@ -16,21 +16,36 @@ const Cac = ({ color }) => {
   const [updatedStarup, setupdatedStarup] = useState();
 
   const [loading, setLoading] = useState(false); */
+  const [choosetStartupId, setChoosetStartupId] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [months, setMonths] = useState([
+    { id: 1, name: "January" },
+    { id: 2, name: "February" },
+    { id: 3, name: "March" },
+    { id: 4, name: "April" },
+    { id: 5, name: "May" },
+    { id: 6, name: "June" },
+    { id: 7, name: "July" },
+    { id: 8, name: "August" },
+    { id: 9, name: "September" },
+    { id: 10, name: "October" },
+    { id: 11, name: "November" },
+    { id: 12, name: "December" },
+  ]);
   var CacData = {
     amount: amount,
-    month: month,
+    month: selectedItem?.name,
     startupId: startupId,
   };
 
-  useEffect(() => {
-    getAllCacsByStartup();
-  }, []);
+  useEffect(() => {}, []);
   /* 
   useEffect(() => {
     setupdatedStarup({ ...updatedStarup, name: Newname });
   }, [Newname]);
  */
   const getAllCacsByStartup = (startupId) => {
+    console.log(startupId);
     // console.log("addStartup" + getStartups.JSON);
     // setLoading(true);
     Cacs.getAllCacsByStartup(startupId)
@@ -60,7 +75,7 @@ const Cac = ({ color }) => {
     Cacs.createCac(CacData)
       .then((res) => {
         console.log(res.data.report);
-        getAllCacsByStartup();
+        getAllCacsByStartup(startupId);
       })
       .catch((err) => {
         console.log(err);
@@ -84,6 +99,12 @@ const Cac = ({ color }) => {
     CacData.startupId = event.target.value;
   };
 
+  const handleChooseStartup = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    setChoosetStartupId(event.target.value);
+    getAllCacsByStartup(event.target.value);
+  };
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -142,13 +163,10 @@ const Cac = ({ color }) => {
                   >
                     Month
                   </label>
-                  <input
-                    type="text"
-                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                    required
-                    onChange={(e) => {
-                      setMonth(e.target.value);
-                    }}
+                  <Dropdown
+                    setSelectedItem={setSelectedItem}
+                    data={months}
+                    title="Select Month"
                   />
                 </div>
               </div>
@@ -181,17 +199,22 @@ const Cac = ({ color }) => {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Startups
+                CAC
               </h3>
             </div>
 
-            <button
-              className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
-              //onClick={deleteAllStartups}
+            <select
+              name="cars"
+              id="cars"
+              className={
+                "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              }
+              onChange={handleChooseStartup}
             >
-              Delete All
-            </button>
+              {(startups || []).map((startup) => (
+                <option value={startup?.id}>{startup?.name}</option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="block w-full overflow-x-auto">
@@ -218,7 +241,17 @@ const Cac = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Actions
+                  Amount
+                </th>
+                <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                  }
+                >
+                  Month
                 </th>
               </tr>
             </thead>
@@ -227,11 +260,19 @@ const Cac = ({ color }) => {
                 <tr key={item.id}>
                   <th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {item.name}
+                      {item.startup.name}
                     </td>
                   </th>
-
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
+                  <th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item.amount}
+                    </td>
+                  </th>
+                  <th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item.month}
+                    </td>
+                  </th>
                 </tr>
               ))}
             </tbody>

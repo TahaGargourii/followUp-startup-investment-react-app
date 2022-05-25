@@ -4,9 +4,9 @@ const Cacs = {
   createCac: (data) => base.insertItem("cacs", data),
 
   getAllCacsByStartup: (params) =>
-    base.getItem("cacs/startups/cacsByStartup", params),
+    base.getItemsByParams("cacs/cacsByStartup", params),
   getAllCacsByStartupAndMonth: (params) =>
-    base.getItem("cacs/startups/cacsByStartupAndMonth", params),
+    base.getItemsByParams("cacs/cacsByStartupAndMonth", params),
   deleteCac: (params) => base.deleteItem("cacs", params),
   /*  getAllCacsByInvestor: () => base.getItems("cacs/investors"),
   getUserCac: (params) => base.getItems("cacs", params),

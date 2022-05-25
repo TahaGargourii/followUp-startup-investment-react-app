@@ -48,6 +48,20 @@ export const getItem = async (path, params) => {
     .then((response) => response.data);
 };
 
+export const getItemsByParams = async (path, params) => {
+  return await axios
+    .get(
+      getPath(path) +
+        (params
+          ? "?startupId=" + params
+          : "" + params
+          ? "?month=" + params
+          : ""),
+      config
+    )
+    .then((response) => response.data);
+};
+
 export const deleteItem = async (path, data) => {
   return await axios
     .delete(getPath(path) + "/" + data, config)

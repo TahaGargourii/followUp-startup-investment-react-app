@@ -1,22 +1,20 @@
 import React, { useState } from "react";
-import {registerInvestor} from '../../redux/actions/auth'
+import { registerInvestor } from "../../redux/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Dropdown from "components/Dropdowns/Dropdown";
 
 export default function InvestorRegister() {
-  
   const history = new useHistory();
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
-  const [items, setItems] = useState(
-    [
-      {id:1,name:"Seed"},
-      {id:2,name:"Serie A"},
-      {id:3,name:"Serie B"},
-      {id:4,name:"Serie C"},
-      {id:5,name:"Serie D"}
-    ]);
+  const [items, setItems] = useState([
+    { id: 1, name: "Seed" },
+    { id: 2, name: "Serie A" },
+    { id: 3, name: "Serie B" },
+    { id: 4, name: "Serie C" },
+    { id: 5, name: "Serie D" },
+  ]);
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -30,27 +28,24 @@ export default function InvestorRegister() {
     password: password,
     email: email,
     name: name,
-    investingStages: selectedItem?.name
+    investingStages: selectedItem?.name,
   };
 
   const signUp = () => {
     if (userAccount.password != confirmpassword) {
       console.log("password or username is incorrect");
     } else {
-      console.log('here i am',userAccount);
-      dispatch(
-        registerInvestor(userAccount)
-      )
+      console.log("here i am", userAccount);
+      dispatch(registerInvestor(userAccount))
         .then((res) => {
-          history.push('/auth/login');
-          console.log('doing nothing',res)
+          history.push("/auth/login");
+          console.log("doing nothing", res);
         })
         .catch((e) => {
           console.log(e, "loginError");
         });
     }
   };
-
 
   return (
     <>
@@ -121,13 +116,12 @@ export default function InvestorRegister() {
                     >
                       Investment Stage
                     </label>
-                      <Dropdown
-                        setSelectedItem={setSelectedItem}
-                        data = {items}
-                        title="Select Investment Stage"
-                      />
+                    <Dropdown
+                      setSelectedItem={setSelectedItem}
+                      data={items}
+                      title="Select Investment Stage"
+                    />
                   </div>
-                  
 
                   <div className="relative w-full mb-3">
                     <label
@@ -140,7 +134,7 @@ export default function InvestorRegister() {
                       type="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
-                       onChange={(e) => {
+                      onChange={(e) => {
                         setPassword(e.target.value);
                       }}
                     />

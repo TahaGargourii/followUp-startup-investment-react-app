@@ -1,68 +1,110 @@
 import React, { useState, useEffect } from "react";
 
 // METHOD DELETE UPDATE MA YEKHDMOUCH
-
+import Dropdown from "components/Dropdowns/Dropdown";
 import PropTypes from "prop-types";
+import Revenues from "services/revenue.service.js";
 import Startups from "services/startup.service.js";
-
 const Revenue = ({ color }) => {
-  const [name, setName] = useState("");
-  const [Newname, setNewName] = useState("");
+  const [amount, setAmount] = useState("");
+  const [month, setMonth] = useState("");
+  const [startupId, setStartupId] = useState("");
 
-  const [isUpdating, setisUpdating] = useState(false);
+  const [startups, setStartup] = useState([]);
+  const [revenues, setRevenues] = useState([]);
+  /*  const [isUpdating, setisUpdating] = useState(false);
   const [updatedStarup, setupdatedStarup] = useState();
 
-  const [loading, setLoading] = useState(false);
-  var StartupData = {
-    name: name,
+  const [loading, setLoading] = useState(false); */
+  const [choosetStartupId, setChoosetStartupId] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [months, setMonths] = useState([
+    { id: 1, name: "January" },
+    { id: 2, name: "February" },
+    { id: 3, name: "March" },
+    { id: 4, name: "April" },
+    { id: 5, name: "May" },
+    { id: 6, name: "June" },
+    { id: 7, name: "July" },
+    { id: 8, name: "August" },
+    { id: 9, name: "September" },
+    { id: 10, name: "October" },
+    { id: 11, name: "November" },
+    { id: 12, name: "December" },
+  ]);
+  var RevenueData = {
+    amount: amount,
+    month: selectedItem?.name,
+    startupId: startupId,
   };
-  const [startups, setStartup] = useState([]);
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    getStartups();
-  }, []);
 
+  useEffect(() => {}, []);
+  /* 
   useEffect(() => {
     setupdatedStarup({ ...updatedStarup, name: Newname });
   }, [Newname]);
-
-  const getStartups = () => {
-    console.log("addStartup" + getStartups.JSON);
-    setLoading(true);
-    Startups.getStartups()
+ */
+  const getAllRevenuesByStartup = (startupId) => {
+    console.log(startupId);
+    // console.log("addStartup" + getStartups.JSON);
+    // setLoading(true);
+    Revenues.getAllRevenuesByStartup(startupId)
       .then((res) => {
         console.log("addStartupres" + res);
         console.log("getStartups c", res.data);
-        setStartup(res.data);
+        setRevenues(res.data);
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        setLoading(false);
+        //setLoading(false);
       });
   };
 
-  const updateProcess = (id) => {
+  /*   const updateProcess = (id) => {
     console.log("updating process", id);
     setisUpdating(true);
     var item = startups.find((o) => o.id == id);
     setupdatedStarup(item);
     //updateStartup(id,{...item, name: Newname})
-  };
+  }; */
 
-  const addStartup = () => {
+  const addRevenue = () => {
     console.log("addStartup");
-    Startups.createStartup(StartupData)
+    Revenues.createRevenue(RevenueData)
       .then((res) => {
         console.log(res.data.report);
-        getStartups();
+        getAllRevenuesByStartup(startupId);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    Startups.getStartups()
+      .then((res) => {
+        console.log("getStartups", res.data);
+        setStartup(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  const handleChangeStartup = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    RevenueData.startupId = event.target.value;
+  };
+
+  const handleChooseStartup = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    setChoosetStartupId(event.target.value);
+    getAllRevenuesByStartup(event.target.value);
+  };
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
@@ -82,33 +124,63 @@ const Revenue = ({ color }) => {
                     className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
                     htmlFor="grid-password"
                   >
-                    Startup Name
+                    Startup
                   </label>
-                  {!isUpdating ? (
-                    <input
-                      type="text"
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      required
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                      required
-                      onChange={(e) => {
-                        setNewName(e.target.value);
-                      }}
-                      value={updatedStarup?.name}
-                    />
-                  )}
+
+                  <select
+                    name="cars"
+                    id="cars"
+                    className={
+                      "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    }
+                    onChange={handleChangeStartup}
+                  >
+                    {(startups || []).map((startup) => (
+                      <option value={startup?.id}>{startup?.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Amount
+                  </label>
+                  <input
+                    type="text"
+                    className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                    required
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                    }}
+                  />
+                </div>
+                <div className="relative w-full mb-3">
+                  <label
+                    className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="grid-password"
+                  >
+                    Month
+                  </label>
+                  <Dropdown
+                    setSelectedItem={setSelectedItem}
+                    data={months}
+                    title="Select Month"
+                  />
                 </div>
               </div>
             </div>
 
             <hr className="mt-6 border-b-1 border-blueGray-300" />
+
+            <button
+              className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+              type="button"
+              onClick={addRevenue}
+            >
+              Sumbit
+            </button>
           </form>
         </div>
       </div>
@@ -127,17 +199,22 @@ const Revenue = ({ color }) => {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Startups
+                REVENUE
               </h3>
             </div>
 
-            <button
-              className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
-              //onClick={deleteAllStartups}
+            <select
+              name="cars"
+              id="cars"
+              className={
+                "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+              }
+              onChange={handleChooseStartup}
             >
-              Delete All
-            </button>
+              {(startups || []).map((startup) => (
+                <option value={startup?.id}>{startup?.name}</option>
+              ))}
+            </select>
           </div>
         </div>
         <div className="block w-full overflow-x-auto">
@@ -164,20 +241,38 @@ const Revenue = ({ color }) => {
                       : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
                   }
                 >
-                  Actions
+                  Amount
+                </th>
+                <th
+                  className={
+                    "px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left " +
+                    (color === "light"
+                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
+                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
+                  }
+                >
+                  Month
                 </th>
               </tr>
             </thead>
             <tbody>
-              {(startups || [] || []).map((item) => (
+              {(revenues || [] || []).map((item) => (
                 <tr key={item.id}>
                   <th>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                      {item.name}
+                      {item.startup.name}
                     </td>
                   </th>
-
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
+                  <th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item.amount}
+                    </td>
+                  </th>
+                  <th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                      {item.month}
+                    </td>
+                  </th>
                 </tr>
               ))}
             </tbody>

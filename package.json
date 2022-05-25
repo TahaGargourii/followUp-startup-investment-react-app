@@ -17,6 +17,7 @@
     "postcss": "8.2.8",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-form-with-constraints": "^0.18.0",
     "react-redux": "^8.0.1",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
