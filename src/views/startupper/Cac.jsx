@@ -12,10 +12,6 @@ const Cac = ({ color }) => {
 
   const [startups, setStartup] = useState([]);
   const [cacs, setCacs] = useState([]);
-  /*  const [isUpdating, setisUpdating] = useState(false);
-  const [updatedStarup, setupdatedStarup] = useState();
-
-  const [loading, setLoading] = useState(false); */
   const [choosetStartupId, setChoosetStartupId] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [months, setMonths] = useState([
@@ -32,11 +28,6 @@ const Cac = ({ color }) => {
     { id: 11, name: "November" },
     { id: 12, name: "December" },
   ]);
-  var CacData = {
-    amount: amount,
-    month: selectedItem?.name,
-    startupId: startupId,
-  };
 
   useEffect(() => {}, []);
   /* 
@@ -46,6 +37,7 @@ const Cac = ({ color }) => {
  */
   const getAllCacsByStartup = (startupId) => {
     console.log(startupId);
+
     // console.log("addStartup" + getStartups.JSON);
     // setLoading(true);
     Cacs.getAllCacsByStartup(startupId)
@@ -71,7 +63,11 @@ const Cac = ({ color }) => {
   }; */
 
   const addCac = () => {
-    console.log("addStartup");
+    var CacData = {
+      amount: amount,
+      month: selectedItem?.name,
+      startupId: startupId,
+    };
     Cacs.createCac(CacData)
       .then((res) => {
         console.log(res.data.report);
@@ -96,7 +92,8 @@ const Cac = ({ color }) => {
   const handleChangeStartup = (event) => {
     console.log("select team");
     console.log("select team" + event.target.value);
-    CacData.startupId = event.target.value;
+    setStartupId(event.target.value);
+    // CacData.startupId = event.target.value;
   };
 
   const handleChooseStartup = (event) => {
