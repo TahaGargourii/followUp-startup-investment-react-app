@@ -1,7 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Chart from "chart.js";
+import Revenue from "services/revenue.service.js";
+export default function CardLineChart(props) {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    getAllRevenuesByStartup();
+  }, [props.startupId]);
+  const getAllRevenuesByStartup = () => {
+    Revenue.getAllRevenuesByStartup(props.startupId)
+      .then((res) => {
+        console.log("addStartupres" + res);
+        console.log("getStartups c", res.data);
+        // setCacs(res.data);
+        setData([
+          ...data,
+          {
+            label: new Date().getFullYear(),
+            data: res.data.map((x) => x.amount),
+            borderColor: "#ed64a6",
+            backgroundColor: "#ed64a6",
+            fill: false,
+            barThickness: 8,
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        //setLoading(false);
+      });
+  };
 
-export default function CardLineChart() {
   React.useEffect(() => {
     var config = {
       type: "line",
@@ -14,13 +44,19 @@ export default function CardLineChart() {
           "May",
           "June",
           "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "Decmeber",
         ],
-        datasets: [
+        datasets: data,
+        /* [
           {
             label: new Date().getFullYear(),
             backgroundColor: "#4c51bf",
             borderColor: "#4c51bf",
-            data: [65, 78, 66, 44, 56, 67, 75],
+            data: data,
             fill: false,
           },
           {
@@ -30,7 +66,7 @@ export default function CardLineChart() {
             borderColor: "#fff",
             data: [40, 68, 86, 74, 56, 60, 87],
           },
-        ],
+        ], */
       },
       options: {
         maintainAspectRatio: false,
@@ -105,7 +141,7 @@ export default function CardLineChart() {
     };
     var ctx = document.getElementById("line-chart").getContext("2d");
     window.myLine = new Chart(ctx, config);
-  }, []);
+  }, [data]);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-blueGray-700">
@@ -115,7 +151,9 @@ export default function CardLineChart() {
               <h6 className="uppercase text-blueGray-100 mb-1 text-xs font-semibold">
                 Overview
               </h6>
-              <h2 className="text-white text-xl font-semibold">Revenue Growth</h2>
+              <h2 className="text-white text-xl font-semibold">
+                Revenue Growth
+              </h2>
             </div>
           </div>
         </div>

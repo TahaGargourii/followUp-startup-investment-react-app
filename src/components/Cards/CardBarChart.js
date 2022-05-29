@@ -1,7 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Chart from "chart.js";
+import Cacs from "services/cac.service.js";
+export default function CardBarChart(props) {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    getAllCacsByStartup();
+  }, [props.startupId]);
 
-export default function CardBarChart() {
+  const getAllCacsByStartup = () => {
+    Cacs.getAllCacsByStartup(props.startupId)
+      .then((res) => {
+        console.log("addStartupres" + res);
+        console.log("getStartups c", res.data);
+        // setCacs(res.data);
+        setData([
+          ...data,
+          {
+            //  label: new Date().getFullYear(),
+            data: res.data.map((x) => x.amount),
+            borderColor: "#ed64a6",
+            backgroundColor: "#ed64a6",
+            fill: false,
+            barThickness: 8,
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        //setLoading(false);
+      });
+  };
+
   React.useEffect(() => {
     let config = {
       type: "bar",
@@ -14,25 +45,13 @@ export default function CardBarChart() {
           "May",
           "June",
           "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "Decmeber",
         ],
-        datasets: [
-          {
-            label: new Date().getFullYear(),
-            backgroundColor: "#ed64a6",
-            borderColor: "#ed64a6",
-            data: [30, 78, 56, 34, 100, 45, 13],
-            fill: false,
-            barThickness: 8,
-          },
-          {
-            label: new Date().getFullYear() - 1,
-            fill: false,
-            backgroundColor: "#4c51bf",
-            borderColor: "#4c51bf",
-            data: [27, 68, 86, 74, 10, 4, 87],
-            barThickness: 8,
-          },
-        ],
+        datasets: data,
       },
       options: {
         maintainAspectRatio: false,
@@ -97,7 +116,9 @@ export default function CardBarChart() {
     };
     let ctx = document.getElementById("bar-chart").getContext("2d");
     window.myBar = new Chart(ctx, config);
-  }, []);
+  }, [data]);
+
+  console.log("ya botyyy hay data " + data);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">

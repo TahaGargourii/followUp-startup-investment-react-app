@@ -1,35 +1,121 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-// components
+// NE9ESS DES CARD
+// CARD TOTAL FUNDS W CARD TOTAL REVENUE
+// PIE CHART REPATITION MTAA LFUNDS KIMA F DESIGN
+import Fonds from "../../services/fond.service";
 
 import CardLineChart from "components/Cards/CardLineChart.js";
 import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPageVisits from "components/Cards/CardPageVisits.js";
+import CardProfile from "components/Cards/CardProfile";
+import CardSettings from "components/Cards/CardSettings";
+import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
+import CardStats from "components/Cards/CardStats.js";
+import CardTable from "components/Cards/CardTable.js";
 import HeaderStats from "components/Headers/HeaderStats";
-import Investortable from "./Investortable";
-//// CARD TOTAL STARTUPS  W POTRFOLIO VALUE W TOTAL REVENUE
-// CARD FEHA LISTE FILES LKOL YNAJEM YCONSULTEHOM 
-// 
-
-
+//import Tablestartup from "./Tablestartup";
+import Cacs from "services/cac.service.js";
+import Startups from "services/startup.service.js";
+import Dropdown from "components/Dropdowns/Dropdown";
 
 export default function Dashboard() {
+  const [amount, setAmount] = useState("");
+  const [month, setMonth] = useState("");
+  const [startupId, setStartupId] = useState("");
+
+  const [startups, setStartup] = useState([]);
+  const [cacs, setCacs] = useState([]);
+  const [choosetStartupId, setChoosetStartupId] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    Startups.getStartups()
+      .then((res) => {
+        console.log("getStartups", res.data);
+        setStartup(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  const handleChangeStartup = (event) => {
+    console.log("select startup" + event.target.value);
+    setStartupId(event.target.value);
+    // CacData.startupId = event.target.value;
+  };
+
+  const handleChooseStartup = (event) => {
+    console.log("select team");
+    console.log("select team" + event.target.value);
+    setChoosetStartupId(event.target.value);
+  };
+
   return (
     <>
-      <div className="rounded-t bg-white mb-0 px-6 py-6">
-        <div className="text-center flex justify-between">
-          <h6 className="text-blueGray-700 text-xl font-bold">
-            Contact Information
-          </h6>
+      <CardStats />
+      <div className="flex flex-wrap">
+        <div className="w-full xl:w-4/12 px-4">
+          {/*     <label
+            className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+            htmlFor="grid-password"
+          >
+            Startup
+          </label>
+
+          <select
+            name="cars"
+            id="cars"
+            className={
+              "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            }
+            onChange={handleChangeStartup}
+          >
+            {(startups || []).map((startup) => (
+              <option value={startup?.id}>{startup?.name}</option>
+            ))}
+          </select> */}
+        </div>
+        <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
+          <label
+            className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+            htmlFor="grid-password"
+          >
+            Startup
+          </label>
+
+          <select
+            name="cars"
+            id="cars"
+            className={
+              "border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+            }
+            onChange={handleChangeStartup}
+          >
+            {(startups || []).map((startup) => (
+              <option value={startup?.id}>{startup?.name}</option>
+            ))}
+          </select>
+          <CardLineChart startupId={startupId} />
+
+          <br />
+          <CardBarChart startupId={startupId} />
+          {/*           <CardPageVisits />
+          <CardProfile />
+          <CardSettings />
+          <CardSocialTraffic />
+          <CardStats />
+          <CardTable /> */}
+        </div>
+        {/*     <div className="w-full xl:w-4/12 px-4">
+          <CardBarChart />
         </div>
       </div>
-      
-     
-      
       <div className="flex flex-wrap mt-4">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-  <Investortable/>
-          </div>
+          <Tablestartup />
+        </div> */}
 
         <div className="ff">
           {/*  <Paper classname="Paper">

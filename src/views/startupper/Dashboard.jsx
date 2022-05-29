@@ -28,25 +28,6 @@ export default function Dashboard() {
   const [choosetStartupId, setChoosetStartupId] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const getAllCacsByStartup = (startupId) => {
-    console.log(startupId);
-
-    // console.log("addStartup" + getStartups.JSON);
-    // setLoading(true);
-    Cacs.getAllCacsByStartup(startupId)
-      .then((res) => {
-        console.log("addStartupres" + res);
-        console.log("getStartups c", res.data);
-        setCacs(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        //setLoading(false);
-      });
-  };
-
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     Startups.getStartups()
@@ -59,8 +40,7 @@ export default function Dashboard() {
       });
   }, []);
   const handleChangeStartup = (event) => {
-    console.log("select team");
-    console.log("select team" + event.target.value);
+    console.log("select startup" + event.target.value);
     setStartupId(event.target.value);
     // CacData.startupId = event.target.value;
   };
@@ -69,14 +49,14 @@ export default function Dashboard() {
     console.log("select team");
     console.log("select team" + event.target.value);
     setChoosetStartupId(event.target.value);
-    getAllCacsByStartup(event.target.value);
   };
 
   return (
     <>
+      {" "}
+      <CardStats />
       <div className="flex flex-wrap">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
-          <CardLineChart />
           <label
             className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
             htmlFor="grid-password"
@@ -96,23 +76,25 @@ export default function Dashboard() {
               <option value={startup?.id}>{startup?.name}</option>
             ))}
           </select>
+          <CardLineChart startupId={startupId} />
+
           <br />
-          <CardBarChart />
-          <CardPageVisits />
-          <CardProfile />
+          <CardBarChart startupId={startupId} />
+          {/*   <CardPageVisits /> */}
+          {/*    <CardProfile />
           <CardSettings />
           <CardSocialTraffic />
-          <CardStats />
-          <CardTable />
+
+          <CardTable /> */}
         </div>
-        <div className="w-full xl:w-4/12 px-4">
+        {/*     <div className="w-full xl:w-4/12 px-4">
           <CardBarChart />
         </div>
       </div>
       <div className="flex flex-wrap mt-4">
         <div className="w-full xl:w-8/12 mb-12 xl:mb-0 px-4">
           <Tablestartup />
-        </div>
+        </div> */}
 
         <div className="ff">
           {/*  <Paper classname="Paper">

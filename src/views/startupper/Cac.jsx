@@ -29,38 +29,24 @@ const Cac = ({ color }) => {
     { id: 12, name: "December" },
   ]);
 
-  useEffect(() => {}, []);
-  /* 
   useEffect(() => {
-    setupdatedStarup({ ...updatedStarup, name: Newname });
-  }, [Newname]);
- */
-  const getAllCacsByStartup = (startupId) => {
+    getAllCacsByStartup();
+  }, []);
+
+  const getAllCacsByStartup = () => {
     console.log(startupId);
 
-    // console.log("addStartup" + getStartups.JSON);
-    // setLoading(true);
     Cacs.getAllCacsByStartup(startupId)
       .then((res) => {
-        console.log("addStartupres" + res);
-        console.log("getStartups c", res.data);
+        console.log("getAllCacsByStartup" + res);
+        console.log("getAllCacsByStartup c", res.data);
         setCacs(res.data);
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => {
-        //setLoading(false);
-      });
+      .finally(() => {});
   };
-
-  /*   const updateProcess = (id) => {
-    console.log("updating process", id);
-    setisUpdating(true);
-    var item = startups.find((o) => o.id == id);
-    setupdatedStarup(item);
-    //updateStartup(id,{...item, name: Newname})
-  }; */
 
   const addCac = () => {
     var CacData = {
@@ -70,7 +56,6 @@ const Cac = ({ color }) => {
     };
     Cacs.createCac(CacData)
       .then((res) => {
-        console.log(res.data.report);
         getAllCacsByStartup(startupId);
       })
       .catch((err) => {
@@ -93,7 +78,6 @@ const Cac = ({ color }) => {
     console.log("select team");
     console.log("select team" + event.target.value);
     setStartupId(event.target.value);
-    // CacData.startupId = event.target.value;
   };
 
   const handleChooseStartup = (event) => {
@@ -273,39 +257,6 @@ const Cac = ({ color }) => {
                 </tr>
               ))}
             </tbody>
-            {/*       <tbody>
-              {startups.map((startup) => (
-                <tr key={startup?.id}>
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {startup?.name}
-                  </td>
-
-                  <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    <button
-                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-                      type="button"
-                      //onClick={deleteStartup(item?.id)}
-                      onClick={(e) => {
-                        deleteStartup(startup?.id);
-                      }}
-                    >
-                      Delete
-                    </button>
-
-                    <button
-                      className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-                      type="button"
-                      // onClick={updateProcess()}
-                      onClick={(e) => {
-                        updateProcess(startup?.id);
-                      }}
-                    >
-                      Update
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody> */}
           </table>
         </div>
       </div>

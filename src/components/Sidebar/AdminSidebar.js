@@ -79,7 +79,7 @@ export default function InvestorSidebar() {
             <hr className="my-4 md:min-w-full" />
             {/* Heading */}
             <h6 className="md:min-w-full text-blueGray-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-              Startupper
+              Admin
             </h6>
             {/* Navigation */}
 
@@ -88,40 +88,16 @@ export default function InvestorSidebar() {
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/investor/dashboard") !== -1
+                    (window.location.href.indexOf("/admin/users") !== -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/investor/dashboard"
-                >
-                  <i
-                    className={
-                      " mr-2 text-sm " +
-                      (window.location.href.indexOf("/investor/dashboard") !==
-                      -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
-                    }
-                  ></i>{" "}
-                  Dashboard
-                </Link>
-              </li>
-
-              <li className="items-center">
-                <Link
-                  className={
-                    "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/investor/portfolios") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
-                      : "text-blueGray-700 hover:text-blueGray-500")
-                  }
-                  to="/investor/portfolios"
+                  to="/admin/users"
                 >
                   <i
                     className={
                       "fas mr-2 text-sm " +
-                      (window.location.href.indexOf("/investor/portfolios") !==
-                      -1
+                      (window.location.href.indexOf("/admin/users") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }

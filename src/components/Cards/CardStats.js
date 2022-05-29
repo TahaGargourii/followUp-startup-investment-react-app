@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import Fonds from "../../services/fond.service";
 
 export default function CardStats({
   statSubtitle,
@@ -11,6 +12,23 @@ export default function CardStats({
   statIconName,
   statIconColor,
 }) {
+  const [sommeFonds, setSommeFonds] = useState();
+  useEffect(() => {
+    getSommeFondsByInvestor();
+  }, [sommeFonds]);
+
+  const getSommeFondsByInvestor = () => {
+    Fonds.getSommeFondsByInvestor()
+      .then((res) => {
+        console.log("getFonds", res.data);
+        setSommeFonds(res.data);
+        console.log("sommeFonds", sommeFonds);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
@@ -18,10 +36,10 @@ export default function CardStats({
           <div className="flex flex-wrap">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
               <h5 className="text-blueGray-400 uppercase font-bold text-xs">
-                {statSubtitle}
+                Somme Fond
               </h5>
               <span className="font-semibold text-xl text-blueGray-700">
-                {statTitle}
+                {sommeFonds}
               </span>
             </div>
             <div className="relative w-auto pl-4 flex-initial">

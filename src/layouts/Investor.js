@@ -16,6 +16,7 @@ import Contact from "views/investor/Contact.jsx";
 import Startup from "views/investor/Startup.jsx";
 import StartupDashboard from "views/investor/StartupDashboard.jsx";
 import File from "views/investor/File.jsx";
+import Portfolios from "./../views/investor/Portfolio";
 export default function Investor() {
   return (
     <>
@@ -26,9 +27,21 @@ export default function Investor() {
         <HeaderStatsStartupper />
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
-            <Route path="/investor/dashboard" exact component={requireAuth(Dashboard)} />
-            <Route path="/investor/contacts" exact component={requireAuth(Contact)} />
-            <Route path="/investor/portfolios" exact component={requireAuth(Startup)} />
+            <Route
+              path="/investor/dashboard"
+              exact
+              component={requireAuth(Dashboard)}
+            />
+            <Route
+              path="/investor/contacts"
+              exact
+              component={requireAuth(Contact)}
+            />
+            <Route
+              path="/investor/portfolios"
+              exact
+              component={requireAuth(Portfolios)}
+            />
 
             <Route
               path="/investor/startupDashboard"

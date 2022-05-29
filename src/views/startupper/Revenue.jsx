@@ -12,10 +12,6 @@ const Revenue = ({ color }) => {
 
   const [startups, setStartup] = useState([]);
   const [revenues, setRevenues] = useState([]);
-  /*  const [isUpdating, setisUpdating] = useState(false);
-  const [updatedStarup, setupdatedStarup] = useState();
-
-  const [loading, setLoading] = useState(false); */
   const [choosetStartupId, setChoosetStartupId] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const [months, setMonths] = useState([
@@ -32,26 +28,25 @@ const Revenue = ({ color }) => {
     { id: 11, name: "November" },
     { id: 12, name: "December" },
   ]);
-  var RevenueData = {
-    amount: amount,
-    month: selectedItem?.name,
-    startupId: startupId,
-  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getAllRevenuesByStartup();
+  }, []);
   /* 
   useEffect(() => {
     setupdatedStarup({ ...updatedStarup, name: Newname });
   }, [Newname]);
  */
-  const getAllRevenuesByStartup = (startupId) => {
+  const getAllRevenuesByStartup = () => {
     console.log(startupId);
+
     // console.log("addStartup" + getStartups.JSON);
     // setLoading(true);
+
     Revenues.getAllRevenuesByStartup(startupId)
       .then((res) => {
-        console.log("addStartupres" + res);
-        console.log("getStartups c", res.data);
+        console.log("getAllRevenuesByStartup" + res);
+        console.log("getAllRevenuesByStartup c", res.data);
         setRevenues(res.data);
       })
       .catch((err) => {
@@ -71,10 +66,13 @@ const Revenue = ({ color }) => {
   }; */
 
   const addRevenue = () => {
-    console.log("addStartup");
+    var RevenueData = {
+      amount: amount,
+      month: selectedItem?.name,
+      startupId: startupId,
+    };
     Revenues.createRevenue(RevenueData)
       .then((res) => {
-        console.log(res.data.report);
         getAllRevenuesByStartup(startupId);
       })
       .catch((err) => {
@@ -96,7 +94,7 @@ const Revenue = ({ color }) => {
   const handleChangeStartup = (event) => {
     console.log("select team");
     console.log("select team" + event.target.value);
-    RevenueData.startupId = event.target.value;
+    setStartupId(event.target.value);
   };
 
   const handleChooseStartup = (event) => {

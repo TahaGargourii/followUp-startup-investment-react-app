@@ -7,6 +7,7 @@ const Fonds = {
   getFondByIdAndStartupOrInvestor: (params) => base.getItems("fonds", params),
   getAllFondsByStartup: (params) => base.getItem("fonds/startups", params),
   getAllFondsByInvestor: () => base.getItems("fonds/investors"),
+  getSommeFondsByInvestor: () => base.getItems("fonds/sommeInvestors"),
   getUserFond: (params) => base.getItems("fonds", params),
   getAssignedUserFond: (params) => base.getItems("fonds", params),
   deleteFond: (params) => base.deleteItem("fonds", params),
